@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Checkout</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="checkout">Checkout</string>
+    <string name="total">Total</string>
+    <string name="price">Price</string>
+    <string name="confirm">Confirm</string>
+    <string name="dis5">-5%</string>
+    <string name="dis10">-10%</string>
+    <string name="payment">Payment Type</string>
+    <string name="totalTax">With 15% Tax</string>
+    <string name="cash">Cash</string>
+
+</resources>

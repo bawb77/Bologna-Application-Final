@@ -2,11 +2,12 @@ package com.example.checkout;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import android.app.Activity;
 //imports
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-public class CheckoutMainActivity extends ActionBarActivity {
+public class CheckoutMainActivity extends Activity {
 	//array lists for managing items and inventory
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> cartItems = new ArrayList<Items>();

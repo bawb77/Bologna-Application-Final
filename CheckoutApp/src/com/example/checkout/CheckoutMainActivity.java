@@ -41,16 +41,16 @@ public class CheckoutMainActivity extends Activity {
         totalText.setText(stringdouble);
         
         //starting Items for Grid
-        itemList.add(new Items("A man's arm",1.99));
-        itemList.add(new Items("Wolverine",97.00));
-        itemList.add(new Items("A Bit of String",2.34));
-        itemList.add(new Items("FaceSucker",56.34));
-        itemList.add(new Items("Your Mother's love",0.00));
-        itemList.add(new Items("Armpit muncher",25.67));
-        itemList.add(new Items("Hugs",1.00));
-        itemList.add(new Items("A night at the Roxbury",300.00));
-        itemList.add(new Items("Sucka",3.50));
-        itemList.add(new Items("Morgan Freeman",0.01));
+        itemList.add(new Items("A man's arm",1.99,1));
+        itemList.add(new Items("Wolverine",97.00,2));
+        itemList.add(new Items("A Bit of String",2.34,3));
+        itemList.add(new Items("FaceSucker",56.34,4));
+        itemList.add(new Items("Your Mother's love",0.00,5));
+        itemList.add(new Items("Armpit muncher",25.67,6));
+        itemList.add(new Items("Hugs",1.00,7));
+        itemList.add(new Items("A night at the Roxbury",300.00, 8));
+        itemList.add(new Items("Sucka",3.50,9));
+        itemList.add(new Items("Morgan Freeman",0.01,10));
         
         //link gridview to itemlist
         ItemGrid = (GridView)findViewById(R.id.itemGrid);
@@ -97,7 +97,7 @@ public class CheckoutMainActivity extends Activity {
     //add items from the girdview list to the cart list
     public void addList(int i)
     {
-    	cartItems.add(new Items((itemList.get(i).getItem()), (itemList.get(i).getPrice())));
+    	cartItems.add(new Items((itemList.get(i).getItem()), (itemList.get(i).getPrice()),(itemList.get(i).getId())));
     	updateCart();
     	ListView cList = (ListView)findViewById(R.id.cartList);
     	//set onclick listener for removal of items from the checkout cart
@@ -205,6 +205,10 @@ public class CheckoutMainActivity extends Activity {
     	cartItems.clear();
     	updateCart();
     	displayTotal(calcTotal());
+    }
+    public void adminClick(View v)
+    {
+    	
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

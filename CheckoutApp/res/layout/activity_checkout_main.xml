@@ -52,8 +52,16 @@
             <ListView
                 android:id="@+id/cartList"
                 android:layout_width="317dp"
-                android:layout_height="wrap_content" >
+                android:layout_height="634dp" >
             </ListView>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:onClick="clearAll"
+                android:text="@string/clear" />
 
         </LinearLayout>
 

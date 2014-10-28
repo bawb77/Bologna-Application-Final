@@ -17,5 +17,6 @@
 	<string name="admin">Admin</string>
 	<string name="cashb">Cash Back</string>
 	<string name="search">Enter Search Here</string>
+	<string name="clear">Clear All</string>
 	
 </resources>

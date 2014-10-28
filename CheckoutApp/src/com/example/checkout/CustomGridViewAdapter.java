@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CustomGridViewAdapter extends ArrayAdapter<Items> {
@@ -37,6 +38,7 @@ public class CustomGridViewAdapter extends ArrayAdapter<Items> {
 			//assign textviews
 			holder.itemName = (TextView) row.findViewById(R.id.item_text);
 			holder.itemPrice = (TextView) row.findViewById(R.id.item_price);
+			holder.itemImage = (ImageView) row.findViewById(R.id.item_image);
 			row.setTag(holder);
 		} else {
 			holder = (RecordHolder) row.getTag();
@@ -45,6 +47,7 @@ public class CustomGridViewAdapter extends ArrayAdapter<Items> {
 		Items item = data.get(position);
 		holder.itemName.setText(item.getItem());
 		holder.itemPrice.setText(Double.toString(item.getPrice()));
+		//holder.itemImage.setImageBitmap();
 		return row;
 
 	}
@@ -52,6 +55,7 @@ public class CustomGridViewAdapter extends ArrayAdapter<Items> {
 	static class RecordHolder {
 		TextView itemName;
 		TextView itemPrice;
+		ImageView itemImage;
 
 	}
 }

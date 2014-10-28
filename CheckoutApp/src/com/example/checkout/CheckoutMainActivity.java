@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -44,21 +45,11 @@ public class CheckoutMainActivity extends Activity {
         //set total to zero to start
         getWindow().setSoftInputMode(
   		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        
         Total = 0.00;
         // set starting total to EditText box
         String stringdouble= Double.toString(Total);
         EditText totalText = (EditText) findViewById(R.id.total);
-        searchText = (EditText) findViewById(R.id.searchText);
-        searchText.addTextChangedListener(new TextWatcher(){
-        	public void afterTextChanged(Editable s) {
-        		editMainList();
-        		mainListDisplay();
-        	}
-			@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
-			@Override public void onTextChanged(CharSequence s, int start, int before,int count) {}
-        });
-        
-        
         totalText.setText(stringdouble);
         discount5 = false;
         discount10 = false;
@@ -66,7 +57,7 @@ public class CheckoutMainActivity extends Activity {
         SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
         itemList = db.getAllItems();
         if(itemList.isEmpty())
-        {
+        {Log.v("ALC", "Fill her up");
         itemList.add(new Items("A man's arm",1.99,1));
         itemList.add(new Items("Wolverine",97.00,2));
         itemList.add(new Items("A Bit of String",2.34,3));
@@ -79,8 +70,24 @@ public class CheckoutMainActivity extends Activity {
         itemList.add(new Items("Morgan Freeman",0.01,10));
         db.addGroupResults(itemList);
         }
-        EditedItemList = itemList;
-        mainListDisplay();   
+        EditedItemList = db.getAllItems();
+        mainListDisplay();
+        searchText = (EditText) findViewById(R.id.searchText);
+        searchText.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+			}	
+        });
+        searchText.addTextChangedListener(new TextWatcher(){
+        	public void afterTextChanged(Editable s) {
+        		editMainList();
+        		mainListDisplay();
+        	}
+			@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			@Override public void onTextChanged(CharSequence s, int start, int before,int count) {}
+        });   
     } 
     public void editMainList()
     {
@@ -99,6 +106,11 @@ public class CheckoutMainActivity extends Activity {
     			}
     		}
     	}
+    }
+    public void clearAll(View v)
+    {
+    	cartItems.removeAll(cartItems);
+    	updateCart();
     }
     public void mainListDisplay()
     { 

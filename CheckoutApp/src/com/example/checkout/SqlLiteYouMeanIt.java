@@ -27,7 +27,8 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		String CREATE_RESULTS_TABLE = "CREATE TABLE " + TABLE_RESULTS + "(" +
 				P_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				ITEM + " STRING," +
-				PRICE + " DOUBLE" +
+				PRICE + " DOUBLE, " +
+				ID + "  INTEGER" +
 				")";
 		db.execSQL(CREATE_RESULTS_TABLE);
 	}
@@ -57,6 +58,15 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		String query = "SELECT * From " + TABLE_RESULTS;
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
+		Items item = null;
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				item = new Items(cursor.getString(1),Double.parseDouble(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
+				tempArray.add(item);
+			}while(cursor.moveToNext());
+		}
 		return tempArray;
 	}
 	public void addGroupResults(ArrayList<Items> aTemp)

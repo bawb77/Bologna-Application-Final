@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,24 +25,48 @@ import android.widget.ToggleButton;
 public class CheckoutMainActivity extends Activity {
 	//array lists for managing items and inventory
 	ArrayList<Items> itemList = new ArrayList<Items>();
-	ArrayList<Items> cartItems = new ArrayList<Items>();
+	ArrayList<Items> EditedItemList = new ArrayList<Items>();
+	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
 	// layout item instantiation
 	GridView ItemGrid;
 	CustomGridViewAdapter customGridAdapter;
+	CustomGridViewAdapterCart customGridAdapterCart;
 	double Total;
+	boolean discount5;
+	boolean discount10;
+	EditText searchText;
+	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_main);
         //set total to zero to start
+        getWindow().setSoftInputMode(
+  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         Total = 0.00;
-        // set starting total to edittext box
+        // set starting total to EditText box
         String stringdouble= Double.toString(Total);
         EditText totalText = (EditText) findViewById(R.id.total);
-        totalText.setText(stringdouble);
+        searchText = (EditText) findViewById(R.id.searchText);
+        searchText.addTextChangedListener(new TextWatcher(){
+        	public void afterTextChanged(Editable s) {
+        		editMainList();
+        		mainListDisplay();
+        	}
+			@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			@Override public void onTextChanged(CharSequence s, int start, int before,int count) {}
+        });
         
+        
+        totalText.setText(stringdouble);
+        discount5 = false;
+        discount10 = false;
         //starting Items for Grid
+        SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
+        itemList = db.getAllItems();
+        if(itemList.isEmpty())
+        {
         itemList.add(new Items("A man's arm",1.99,1));
         itemList.add(new Items("Wolverine",97.00,2));
         itemList.add(new Items("A Bit of String",2.34,3));
@@ -51,30 +77,53 @@ public class CheckoutMainActivity extends Activity {
         itemList.add(new Items("A night at the Roxbury",300.00, 8));
         itemList.add(new Items("Sucka",3.50,9));
         itemList.add(new Items("Morgan Freeman",0.01,10));
-        
-        //link gridview to itemlist
-        ItemGrid = (GridView)findViewById(R.id.itemGrid);
-        customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, itemList);
+        db.addGroupResults(itemList);
+        }
+        EditedItemList = itemList;
+        mainListDisplay();   
+    } 
+    public void editMainList()
+    {
+    	EditedItemList.clear();
+    	
+    	String filter = searchText.getText().toString().toLowerCase();
+    	Log.v("ALC", filter);
+    	if(!itemList.isEmpty())
+    	{
+    		for(Items tempItem: itemList)
+    		{
+    			Log.v("ALC", tempItem.item);
+    			if(tempItem.item.toLowerCase().startsWith(filter))
+    			{
+    				EditedItemList.add(tempItem);
+    			}
+    		}
+    	}
+    }
+    public void mainListDisplay()
+    { 
+    	//link GridView to itemlist
+    	ItemGrid = (GridView)findViewById(R.id.itemGrid);
+        customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, EditedItemList);
         ItemGrid.setAdapter(customGridAdapter);
-        //set onlclick listener for the gridview
+        //set onClick listener for the GridView
         ItemGrid.setOnItemClickListener(new OnItemClickListener() {
         	@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
 				addList(position);
-				displayTotal(calcTotal());
 			}
-		});   
-    } 
+		});
+    }
     //calculate price total for all objects in the checkout cart
     public double calcTotal()
     {
     	double TempTotal=0;
     	if(!cartItems.isEmpty())
     	{
-    		for(Items tempI : cartItems)
+    		for(CartItems tempI : cartItems)
 	    	{
-	    		TempTotal += tempI.getPrice();
+	    		TempTotal += (tempI.getPrice() * tempI.getQuantity());
 	    	}
     	}
 		return TempTotal;
@@ -97,53 +146,95 @@ public class CheckoutMainActivity extends Activity {
     //add items from the girdview list to the cart list
     public void addList(int i)
     {
-    	cartItems.add(new Items((itemList.get(i).getItem()), (itemList.get(i).getPrice()),(itemList.get(i).getId())));
-    	updateCart();
-    	ListView cList = (ListView)findViewById(R.id.cartList);
-    	//set onclick listener for removal of items from the checkout cart
-    	cList.setOnItemClickListener(new OnItemClickListener() {
-    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+    	boolean match = true;
+    	for(CartItems temp :cartItems)
+    	{
+    		if(EditedItemList.get(i).getItem().equals(temp.getItem()))
     		{
-    			//remove items and decrease total
-    			exterminateItem(v, position);
+    			temp.setQuantity((temp.getQuantity() + 1));
+    			updateCart();
+    			match = false;
     		}
-    	});	
+    	}
+    	if(match)
+    	{
+    		cartItems.add(new CartItems((EditedItemList.get(i).getItem()), (EditedItemList.get(i).getPrice()),1));
+    			updateCart();
+    			ListView cList = (ListView)findViewById(R.id.cartList);
+    			//set onclick listener for removal of items from the checkout cart
+    			cList.setOnItemClickListener(new OnItemClickListener() {
+		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+		    		{
+		    			//remove items and decrease total
+		    			exterminateItem(v, position);
+		    		}
+    			});
+    	}	
     }
     //remove items from the checkout cart and update the totals
     public void exterminateItem(View v, int position)
     {
+    	if(cartItems.get(position).getQuantity() > 1)
+    	{
+    		cartItems.get(position).setQuantity(cartItems.get(position).getQuantity() - 1);
+    		updateCart();
+    	}
+    	else 
+    	{
     	cartItems.remove(position);
     	updateCart();
-        displayTotal(calcTotal());
+    	}
+    	
     }
     //update the display of the cart with the current arraylist of objects added
     public void updateCart()
     {
     	ListView cList = (ListView)findViewById(R.id.cartList);
-    	customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, cartItems);
-        cList.setAdapter(customGridAdapter);
+    	customGridAdapterCart = new CustomGridViewAdapterCart(this, R.layout.row_grid, cartItems);
+        cList.setAdapter(customGridAdapterCart);
+        displayTotal(calcTotal());
     }
     //toggle a 5% discount to the current total and recalculate
     public void Dis5(View v)
     { 
-    	boolean on = ((ToggleButton) v).isChecked();
+    	if(!discount10)
+    	{
+    		boolean on = ((ToggleButton) v).isChecked();
         if (on) {
         	displayTotal(calcTotal() - (calcTotal()*0.05));
+        	discount5 = true;
         }
         else {
         	displayTotal(calcTotal());
+        	discount5=false;
         }
+    	}
+    	else
+    	{
+    		((ToggleButton) v).setChecked(false);
+    	}
+    	
     }
   //toggle a 10% discount to the current total and recalculate
     public void Dis10(View v)
     {
-    	boolean on = ((ToggleButton) v).isChecked();
+    	if(!discount5)
+    	{
+    			boolean on = ((ToggleButton) v).isChecked();
         if (on) {
         	displayTotal(calcTotal() - (calcTotal()*0.10));
+        	discount10 = true;
         }
         else {
         	displayTotal(calcTotal());
+        	discount10 = false;
         }
+    	}
+    	else
+    	{
+    		((ToggleButton) v).setChecked(false);
+    	}
+    
     }
     //add 15% tax to passed double amount
     public double addTax(double d)
@@ -209,6 +300,35 @@ public class CheckoutMainActivity extends Activity {
     public void adminClick(View v)
     {
     	
+    }
+    public void cashBack(View v)
+    {
+    	final EditText input = new EditText(this);
+    	input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+    	AlertDialog builder = new AlertDialog.Builder(CheckoutMainActivity.this).create();
+        builder.setTitle(R.string.cashb);
+        builder.setView(input);
+    	//onClick for Cash Back
+    	builder.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				double num=0;
+				num = Double.parseDouble(input.getText().toString());
+				cartItems.add(new CartItems("Cash Back", num ,1));
+    			updateCart();
+    			ListView cList = (ListView)findViewById(R.id.cartList);
+    			//set onClick listener for removal of items from the checkout cart
+    			cList.setOnItemClickListener(new OnItemClickListener() {
+		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+		    		{
+		    			//remove items and decrease total
+		    			exterminateItem(v, position);
+		    		}
+    			});
+			}
+		});
+    	builder.show();
+    
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

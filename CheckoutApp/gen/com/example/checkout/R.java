@@ -26,20 +26,23 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int Discount10=0x7f080008;
-        public static final int Discount5=0x7f080009;
-        public static final int action_settings=0x7f08000d;
-        public static final int button1=0x7f08000a;
-        public static final int cartList=0x7f080002;
-        public static final int checkoutButton=0x7f080007;
-        public static final int itemGrid=0x7f080001;
-        public static final int item_price=0x7f08000c;
-        public static final int item_text=0x7f08000b;
+        public static final int Discount10=0x7f080009;
+        public static final int Discount5=0x7f08000a;
+        public static final int action_settings=0x7f080010;
+        public static final int button1=0x7f08000b;
+        public static final int button2=0x7f08000c;
+        public static final int cartList=0x7f080003;
+        public static final int checkoutButton=0x7f080008;
+        public static final int itemGrid=0x7f080002;
+        public static final int item_price=0x7f08000e;
+        public static final int item_quantity=0x7f08000f;
+        public static final int item_text=0x7f08000d;
         public static final int linearLayout1=0x7f080000;
-        public static final int textView1=0x7f080004;
-        public static final int total=0x7f080005;
-        public static final int totalView=0x7f080003;
-        public static final int withTax=0x7f080006;
+        public static final int searchText=0x7f080001;
+        public static final int textView1=0x7f080005;
+        public static final int total=0x7f080006;
+        public static final int totalView=0x7f080004;
+        public static final int withTax=0x7f080007;
     }
     public static final class layout {
         public static final int activity_checkout_main=0x7f030000;
@@ -53,6 +56,7 @@ public final class R {
         public static final int admin=0x7f05000d;
         public static final int app_name=0x7f050000;
         public static final int cash=0x7f05000b;
+        public static final int cashb=0x7f05000e;
         public static final int checkout=0x7f050003;
         public static final int confirm=0x7f050006;
         public static final int dis10=0x7f050008;
@@ -61,6 +65,7 @@ public final class R {
         public static final int hint=0x7f05000c;
         public static final int payment=0x7f050009;
         public static final int price=0x7f050005;
+        public static final int search=0x7f05000f;
         public static final int total=0x7f050004;
         public static final int totalTax=0x7f05000a;
     }

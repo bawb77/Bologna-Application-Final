@@ -1,15 +1,15 @@
 package com.example.checkout;
 //class object for managing grocery items
 public class Items {
-	private String item;
-	private double price;
-	private int id;
+	public String item;
+	public double price;
+	public int itemId;
 	//Constructor class for adding items
 	public Items(String Item, double Price, int Id)
 	{
 		item = Item;
 		price = Price;
-		id = Id;
+		itemId = Id;
 	}
 	public String getItem() {
 		return item;
@@ -19,6 +19,6 @@ public class Items {
 	}
 	public int getId()
 	{
-		return id;
+		return itemId;
 	}
 }

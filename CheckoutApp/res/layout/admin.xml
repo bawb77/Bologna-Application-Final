@@ -109,6 +109,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="94dp"
         android:onClick="returnToCheckout"
-        android:text="@string/return" />
+        android:text="@string/returnTC" />
 
 </RelativeLayout>

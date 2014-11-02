@@ -22,6 +22,6 @@
 	<string name="delete">Delete Product</string>
 	<string name="pname">Product Name</string>
 	<string name="pprice">Product Price</string>
-	<string name="return">Return to Checkout</string>
+	<string name="returnTC">Return to Checkout</string>
 	
 </resources>

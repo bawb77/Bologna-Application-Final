@@ -80,7 +80,7 @@
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/pNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="2"
@@ -145,7 +145,7 @@
         android:textOn="@string/dis5" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/deletePButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/checkoutButton"
@@ -156,10 +156,10 @@
         android:textSize="25sp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/updateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
+        android:layout_alignRight="@+id/deletePButton"
         android:layout_below="@+id/checkoutButton"
         android:onClick="cashBack"
         android:text="@string/cashb" />

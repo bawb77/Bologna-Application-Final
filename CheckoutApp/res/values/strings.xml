@@ -18,5 +18,10 @@
 	<string name="cashb">Cash Back</string>
 	<string name="search">Enter Search Here</string>
 	<string name="clear">Clear All</string>
+	<string name="update">Update Product</string>
+	<string name="delete">Delete Product</string>
+	<string name="pname">Product Name</string>
+	<string name="pprice">Product Price</string>
+	<string name="return">Return to Checkout</string>
 	
 </resources>

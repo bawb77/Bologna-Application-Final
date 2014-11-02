@@ -16,6 +16,11 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final String ITEM = "item";
 	private static final String PRICE = "price";
 	private static final String ID = "itemId";
+	
+	private static final String TABLE_LOGS = "Logs";	
+	private static final String KEY_LID = "id";
+	private static final String KEY_VALUE = "value";
+	private static final String KEY_DATE = "day";
 
 	public SqlLiteYouMeanIt(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,13 +36,22 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 				ID + "  INTEGER" +
 				")";
 		db.execSQL(CREATE_RESULTS_TABLE);
+		
+		String CREATE_LOGS_TABLE = "CREATE TABLE " + TABLE_LOGS + "(" +
+				KEY_LID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				KEY_VALUE + " STRING," +
+				KEY_DATE + " STRING" +
+				")";
+		db.execSQL(CREATE_LOGS_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS" + TABLE_RESULTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESULTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGS);
 		this.onCreate(db);
 	}
+	
 	public void addResult(Items It)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -52,6 +66,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		db.insert(TABLE_RESULTS, null, values);
 		db.close();
 	}
+	
 	public ArrayList<Items> getAllItems()
 	{
 		ArrayList<Items> tempArray = new ArrayList<Items>();
@@ -69,6 +84,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		}
 		return tempArray;
 	}
+	
 	public void addGroupResults(ArrayList<Items> aTemp)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -81,5 +97,80 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 			db.insert(TABLE_RESULTS, null, values);
 		}
 		db.close();
+	}
+	
+	public void changeItem(Items item, String name, double price){
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(ITEM, name);
+		values.put(PRICE, price);
+		
+		db.update(TABLE_RESULTS, values, ID +"="+ item.itemId, null);
+		
+		db.close();
+	}
+	
+	public Integer getLastId(){
+		Integer id = 0;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String sql = "SELECT last_insert_rowid()";
+		Cursor cursor = db.rawQuery(sql, null);
+		
+		if (cursor.moveToFirst()) {
+		       id = Integer.parseInt(cursor.getString(0));
+		   }
+		
+		return id;
+	}
+	
+	public void addLog(LogItem log)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		
+		values.put(KEY_VALUE, log.value);
+		values.put(KEY_DATE, log.date);
+		
+		db.insert(TABLE_LOGS, null, values);
+		db.close();
+	}
+	
+	public ArrayList<LogItem> getAllLogs()
+	{
+		ArrayList<LogItem> tempArray = new ArrayList<LogItem>();
+		String query = "SELECT * From " + TABLE_LOGS;
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		LogItem log = null;
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				log = new LogItem(cursor.getString(0), cursor.getString(1));
+				tempArray.add(log);
+			}while(cursor.moveToNext());
+		}
+		return tempArray;
+	}
+	
+	public ArrayList<LogItem> getLogsOfDay(String date){
+		ArrayList<LogItem> tempArray = new ArrayList<LogItem>();
+		String query = "SELECT * From " + TABLE_LOGS + " WHERE " + KEY_DATE + " = " + date;
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		LogItem log = null;
+		if(cursor.moveToFirst())
+		{
+			do
+			{
+				log = new LogItem(cursor.getString(0), cursor.getString(1));
+				tempArray.add(log);
+			}while(cursor.moveToNext());
+		}
+		return tempArray;
 	}
 }

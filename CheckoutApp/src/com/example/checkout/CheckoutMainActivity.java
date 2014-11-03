@@ -315,6 +315,7 @@ public class CheckoutMainActivity extends Activity {
     	final EditText input = new EditText(this);
     	final TextView changeResult = new TextView(this);
     	changeResult.setTextColor(android.graphics.Color.WHITE);
+    	changeResult.setTextSize(20);
     	input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     	//create alert box
     	builder.setTitle(R.string.payment);

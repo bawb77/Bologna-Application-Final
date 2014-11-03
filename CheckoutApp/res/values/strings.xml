@@ -25,5 +25,8 @@
     <string name="returnTC">Return to Checkout</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="title_activity_admin">AdminAct</string>
+    <string name="log_title">Logs:</string>
+    <string name="print">Print Logs</string>
+    <string name="returnAP">Return to Admin Page</string>
 
 </resources>

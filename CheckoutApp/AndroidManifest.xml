@@ -16,6 +16,7 @@
         <activity
             android:name=".CheckoutMainActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,7 @@
         <activity
             android:name=".AdminAct"
             android:label="@string/title_activity_admin"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".CheckoutMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

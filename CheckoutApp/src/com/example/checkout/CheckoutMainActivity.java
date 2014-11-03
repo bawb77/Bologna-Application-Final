@@ -7,6 +7,7 @@ import java.util.Calendar;
 import android.app.Activity;
 //imports
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -52,8 +54,6 @@ public class CheckoutMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_main);
         //set total to zero to start
-        getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         Total = 0.00;
         // set starting total to EditText box
@@ -148,6 +148,12 @@ public class CheckoutMainActivity extends Activity {
         	@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
+        		InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+            	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                           InputMethodManager.HIDE_NOT_ALWAYS);
+        		
 				addList(position);
 			}
 		});
@@ -202,6 +208,12 @@ public class CheckoutMainActivity extends Activity {
     			cList.setOnItemClickListener(new OnItemClickListener() {
 		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 		    		{
+		    			InputMethodManager inputManager = (InputMethodManager)
+		    	                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+		    	    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+		    	                   InputMethodManager.HIDE_NOT_ALWAYS);
+		    			
 		    			//remove items and decrease total
 		    			exterminateItem(v, position);
 		    		}
@@ -296,7 +308,6 @@ public class CheckoutMainActivity extends Activity {
     //checkout
     public void checkOut(View v)
     {
-    	
     	//launch alert dialog box for payment type
     	final double checkoutTotal = addTax(calcTotal());
     	AlertDialog builder = new AlertDialog.Builder(CheckoutMainActivity.this).create();
@@ -310,6 +321,13 @@ public class CheckoutMainActivity extends Activity {
     	builder.setButton(AlertDialog.BUTTON_POSITIVE, "Visa", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				//clear the checkout list and update totals
+		    	cartItems.clear();
+		    	updateCart();
+		    	displayTotal(calcTotal());
+		    	
+		    	db.addLog(new LogItem("Payment done", date_today, 1));
+				
 				db.addLog(new LogItem("Payment method: Visa", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Visa", Toast.LENGTH_LONG).show();
 			}//visa
@@ -317,6 +335,13 @@ public class CheckoutMainActivity extends Activity {
     	builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Debit", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				//clear the checkout list and update totals
+		    	cartItems.clear();
+		    	updateCart();
+		    	displayTotal(calcTotal());
+		    	
+		    	db.addLog(new LogItem("Payment done", date_today, 1));
+				
 				db.addLog(new LogItem("Payment method: Debit", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Debit", Toast.LENGTH_LONG).show();
 			}//debit
@@ -337,49 +362,61 @@ public class CheckoutMainActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						double num=0;
 						String temp = input.getText().toString();
-						if (temp != "" && temp != ".")
+						if (temp != "" && temp != ".*")
 						{
 							num = Double.parseDouble(temp);
-							if(num>=0)
-							{
-								DecimalFormat df = new DecimalFormat("#.##");
-							
-							double tempTotal = num - checkoutTotal;
-							int c20b = (int) (tempTotal / 20);
-							tempTotal = tempTotal % 20;
-							int c10b = (int) (tempTotal / 10);
-							tempTotal = tempTotal % 10;
-							int c5b = (int) (tempTotal / 5);
-							tempTotal = tempTotal % 5;
-							int c2d = (int) (tempTotal /2);
-							tempTotal = tempTotal % 2;
-							int c1d = (int) (tempTotal /1);
-							tempTotal = tempTotal % 1;
-							int c25d = (int) (tempTotal /0.25);
-							tempTotal = tempTotal % 0.25;
-							int c10d = (int) (tempTotal /0.10);
-							tempTotal = tempTotal % 0.10;
-							int c5d = (int) (tempTotal / 0.05);
-							String tempChange = " " + c20b + " 20 dollar bill, " + c10b + " 10 dollar bill, " + c5b + " 5 dollar bill, " + c2d + " Toonie," + c1d + " Loonie, " + c25d + " Quater, " + c10d + " Dime, and " + c5d + " nickel.";
-							//Inform user of change required
-							//Toast.makeText(getBaseContext(), "Change Due: $"+ df.format(num - checkoutTotal), Toast.LENGTH_LONG).show();
-							AlertDialog builder3 = new AlertDialog.Builder(CheckoutMainActivity.this).create();
-					    	builder3.setTitle("Correct Change for " + df.format(num - checkoutTotal));
-					    	
-					    	changeResult.setText(tempChange);
-					    	builder3.setView(changeResult);
-					    	//onclick for after cash received
-					    	builder3.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									dialog.dismiss();
+							if(num < checkoutTotal){
+								db.addLog(new LogItem("not enough cash given for payment", date_today, 1));
+								Toast.makeText(getBaseContext(), "not enought cash.", Toast.LENGTH_SHORT).show();
+							} else{
+								if(num>=0)
+								{
+									DecimalFormat df = new DecimalFormat("#.##");
+								
+								double tempTotal = num - checkoutTotal;
+								int c20b = (int) (tempTotal / 20);
+								tempTotal = tempTotal % 20;
+								int c10b = (int) (tempTotal / 10);
+								tempTotal = tempTotal % 10;
+								int c5b = (int) (tempTotal / 5);
+								tempTotal = tempTotal % 5;
+								int c2d = (int) (tempTotal /2);
+								tempTotal = tempTotal % 2;
+								int c1d = (int) (tempTotal /1);
+								tempTotal = tempTotal % 1;
+								int c25d = (int) (tempTotal /0.25);
+								tempTotal = tempTotal % 0.25;
+								int c10d = (int) (tempTotal /0.10);
+								tempTotal = tempTotal % 0.10;
+								int c5d = (int) (tempTotal / 0.05);
+								String tempChange = " " + c20b + " 20 dollar bill, " + c10b + " 10 dollar bill, " + c5b + " 5 dollar bill, " + c2d + " Toonie," + c1d + " Loonie, " + c25d + " Quater, " + c10d + " Dime, and " + c5d + " nickel.";
+								//Inform user of change required
+								//Toast.makeText(getBaseContext(), "Change Due: $"+ df.format(num - checkoutTotal), Toast.LENGTH_LONG).show();
+								AlertDialog builder3 = new AlertDialog.Builder(CheckoutMainActivity.this).create();
+						    	builder3.setTitle("Correct Change for " + df.format(num - checkoutTotal));
+						    	
+						    	changeResult.setText(tempChange);
+						    	builder3.setView(changeResult);
+						    	//onclick for after cash received
+						    	builder3.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										dialog.dismiss();
+									}
+								});
+						    	builder3.show();
 								}
-							});
-					    	builder3.show();
-							}
-							else
-							{
-								Toast.makeText(getBaseContext(), "Insufficent Funds", Toast.LENGTH_LONG).show();
+								else
+								{
+									Toast.makeText(getBaseContext(), "Insufficent Funds", Toast.LENGTH_LONG).show();
+								}
+								
+								//clear the checkout list and update totals
+						    	cartItems.clear();
+						    	updateCart();
+						    	displayTotal(calcTotal());
+						    	
+						    	db.addLog(new LogItem("Payment done", date_today, 1));
 							}
 						}
 						else
@@ -390,17 +427,14 @@ public class CheckoutMainActivity extends Activity {
 				});
 		    	builder2.show();
 		    	//hide keyboard until use input required
-		    	getWindow().setSoftInputMode(
-		    		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		    	InputMethodManager inputManager = (InputMethodManager)
+		                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+		    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+		                   InputMethodManager.HIDE_NOT_ALWAYS);
 			}//cash
 		});
     	builder.show();
-        //clear the checkout list and update totals
-    	cartItems.clear();
-    	updateCart();
-    	displayTotal(calcTotal());
-    	
-    	db.addLog(new LogItem("Payment done", date_today, 1));
     }
     public void adminClick(View v)
     {
@@ -427,6 +461,12 @@ public class CheckoutMainActivity extends Activity {
     			cList.setOnItemClickListener(new OnItemClickListener() {
 		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 		    		{
+		    			InputMethodManager inputManager = (InputMethodManager)
+				                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+				    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+				                   InputMethodManager.HIDE_NOT_ALWAYS);
+		    			
 		    			//remove items and decrease total
 		    			exterminateItem(v, position);
 		    		}

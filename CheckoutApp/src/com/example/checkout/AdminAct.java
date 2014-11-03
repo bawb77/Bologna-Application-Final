@@ -57,9 +57,6 @@ public class AdminAct extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
-        getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
        
         //starting Items for Grid
         db = new SqlLiteYouMeanIt(this);
@@ -134,6 +131,12 @@ public class AdminAct extends Activity {
         	@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
+        		InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+            	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                           InputMethodManager.HIDE_NOT_ALWAYS);
+        		
 				addList(position);
 			}
 		});
@@ -239,8 +242,11 @@ public class AdminAct extends Activity {
     }
     
     private void clearInfos(){
-    	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    	InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
     	
     	et_name.setText("");
     	et_price.setText("");

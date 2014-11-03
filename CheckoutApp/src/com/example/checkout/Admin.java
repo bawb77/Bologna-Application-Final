@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 public class Admin extends Activity {
 	//array lists for managing items and inventory
 	ArrayList<Items> itemList = new ArrayList<Items>();
@@ -29,6 +30,13 @@ public class Admin extends Activity {
 	boolean discount10;
 	EditText searchText;
 	
+	EditText et_name;
+	EditText et_price;
+	boolean createNewItem;
+	int selectedItem;
+	
+	SqlLiteYouMeanIt db;
+	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,13 @@ public class Admin extends Activity {
   		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
        
         //starting Items for Grid
-        SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
+        db = new SqlLiteYouMeanIt(this);
+        
+        et_name = (EditText)findViewById(R.id.pNDisplay);
+        et_price = (EditText)findViewById(R.id.pPDisplay);
+        
+        createNewItem = true;
+        
         itemList = db.getAllItems();
         EditedItemList = db.getAllItems();
         mainListDisplay();
@@ -93,24 +107,68 @@ public class Admin extends Activity {
 			}
 		});
     }
-    //add items from the girdview list to the cart list
+    //add items from the girdview list to the changes views
     public void addList(int i)
     {
-  	
+    	Items item = EditedItemList.get(i);
+    	et_name.setText(item.item);
+    	et_price.setText(item.price + "");
+    	
+    	selectedItem = item.itemId;
+    	
+    	createNewItem = false;
     }
+    
     public void updatePN()
     {
-    	
+    	if(et_name.getText().toString() != "" && et_price.getText().toString() != ""){
+    		if(createNewItem)
+    		{
+    			Integer new_id = db.getLastId() + 1;
+    			Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, null, 0);
+    			db.addResult(item);
+    			
+    			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
+    		} else
+    		{
+    			Items item = EditedItemList.get(selectedItem);
+    			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, null);
+    			
+    			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
+    		}
+    	}
     }
+    
     public void deleteP()
     {
+    	db.deleteItem(selectedItem);
+    	Toast.makeText(getBaseContext(), et_name.getText().toString() + " was deleted.", Toast.LENGTH_SHORT).show();
     	
+    	clearInfos();
     }
+    
+    public void clear(){
+    	clearInfos();
+    }
+    
+    private void clearInfos(){
+    	et_name.setText("");
+    	et_price.setText("");
+    	createNewItem = true;
+    	selectedItem = 0;
+    }
+    
     public void returnToCheckout()
     {
-    	
+    	super.onBackPressed();
     }
-    //remove items from the checkout cart and update the totals
+    
+    @Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
+	//remove items from the checkout cart and update the totals
     //update the display of the cart with the current arraylist of objects added
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,6 +176,7 @@ public class Admin extends Activity {
         getMenuInflater().inflate(R.menu.checkout_main, menu);
         return true;
     }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

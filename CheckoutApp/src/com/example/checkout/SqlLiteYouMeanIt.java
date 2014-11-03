@@ -1,5 +1,6 @@
 package com.example.checkout;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -7,6 +8,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 2;
@@ -16,6 +19,8 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final String ITEM = "item";
 	private static final String PRICE = "price";
 	private static final String ID = "itemId";
+	private static final String GROUP = "group";
+	private static final String PIC = "pic";
 	
 	private static final String TABLE_LOGS = "Logs";	
 	private static final String KEY_LID = "id";
@@ -33,7 +38,9 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 				P_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				ITEM + " STRING," +
 				PRICE + " DOUBLE, " +
-				ID + "  INTEGER" +
+				ID + " INTEGER, " +
+				GROUP + " INTEGER, " +
+				PIC + " BLOB" +
 				")";
 		db.execSQL(CREATE_RESULTS_TABLE);
 		
@@ -61,10 +68,19 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		values.put(ITEM, It.item);
 		values.put(PRICE, It.price);
 		values.put(ID, It.itemId);
-
+		values.put(GROUP, It.group);
+		values.put(PIC, getArrayFromBitmap(It.pic));
 		
 		db.insert(TABLE_RESULTS, null, values);
 		db.close();
+	}
+	
+	private byte[] getArrayFromBitmap(Bitmap pic){
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		pic.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] byteArray = stream.toByteArray();
+		
+		return byteArray;
 	}
 	
 	public ArrayList<Items> getAllItems()
@@ -78,7 +94,9 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		{
 			do
 			{
-				item = new Items(cursor.getString(1),Double.parseDouble(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
+				byte[] bitmapdata = cursor.getBlob(5);
+				Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapdata , 0, bitmapdata .length);
+				item = new Items(cursor.getString(1), cursor.getDouble(2), cursor.getInt(3), bitmap, cursor.getInt(4));
 				tempArray.add(item);
 			}while(cursor.moveToNext());
 		}
@@ -94,17 +112,22 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 			values.put(ITEM, temp.item);
 			values.put(PRICE, temp.price);
 			values.put(ID, temp.itemId);
+			values.put(GROUP, temp.group);
+			values.put(PIC, getArrayFromBitmap(temp.pic));
+			
 			db.insert(TABLE_RESULTS, null, values);
 		}
 		db.close();
 	}
 	
-	public void changeItem(Items item, String name, double price){
+	public void changeItem(Items item, String name, double price, int group, Bitmap pic){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 		values.put(ITEM, name);
 		values.put(PRICE, price);
+		values.put(GROUP, group);
+		values.put(PIC, getArrayFromBitmap(pic));
 		
 		db.update(TABLE_RESULTS, values, ID +"="+ item.itemId, null);
 		
@@ -125,6 +148,17 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		
 		return id;
 	}
+	
+	public void deleteItem(Integer id) {
+		 
+        SQLiteDatabase db = this.getWritableDatabase();
+ 
+        db.delete(TABLE_RESULTS,
+                ID +" = ?", 
+                new String[] { String.valueOf(id) });
+ 
+        db.close();
+    }
 	
 	public void addLog(LogItem log)
 	{

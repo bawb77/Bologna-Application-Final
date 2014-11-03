@@ -1,6 +1,8 @@
 package com.example.checkout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,6 +38,8 @@ public class AdminAct extends Activity {
 	boolean createNewItem;
 	int selectedItem;
 	
+	String date_today;
+	
 	SqlLiteYouMeanIt db;
 	
 	
@@ -52,6 +56,8 @@ public class AdminAct extends Activity {
         
         et_name = (EditText)findViewById(R.id.pNDisplay);
         et_price = (EditText)findViewById(R.id.pPDisplay);
+        
+        date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
         
         createNewItem = true;
         
@@ -130,12 +136,14 @@ public class AdminAct extends Activity {
     			db.addResult(item);
     			
     			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
+    			db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));
     		} else
     		{
     			Items item = EditedItemList.get(selectedItem);
     			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, null);
     			
     			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
+    			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));
     		}
     	}
     }
@@ -144,6 +152,7 @@ public class AdminAct extends Activity {
     {
     	db.deleteItem(selectedItem);
     	Toast.makeText(getBaseContext(), et_name.getText().toString() + " was deleted.", Toast.LENGTH_SHORT).show();
+    	db.addLog(new LogItem(et_name.getText().toString() + " was deleted", date_today, 2));
     	
     	clearInfos();
     }

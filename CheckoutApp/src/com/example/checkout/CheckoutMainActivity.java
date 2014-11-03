@@ -443,6 +443,15 @@ public class CheckoutMainActivity extends Activity {
         return true;
     }
     @Override
+	protected void onResume() {
+		itemList = db.getAllItems();
+		
+		editMainList();
+		mainListDisplay();
+    	
+		super.onResume();
+	}
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

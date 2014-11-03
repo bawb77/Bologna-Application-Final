@@ -96,13 +96,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/linearLayout1"
-        android:layout_marginBottom="33dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/linearLayout1"
         android:background="@android:color/white"
         android:ems="10"
         android:hint="@string/hint"
-        android:inputType="none" />
+        android:inputType="none"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/withTax"
@@ -115,7 +116,8 @@
         android:background="@android:color/white"
         android:ems="10"
         android:hint="@string/hint"
-        android:inputType="none" />
+        android:inputType="none"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/checkoutButton"

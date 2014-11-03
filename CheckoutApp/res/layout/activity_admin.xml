@@ -30,7 +30,8 @@
                 android:ems="10"
                 android:hint="@string/search"
                 android:minLines="1"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:maxLines="1" />
 
             <GridView
                 android:id="@+id/itemGrida"

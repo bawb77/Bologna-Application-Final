@@ -97,7 +97,7 @@ public class AdminAct extends Activity {
     public void update()
     {
     	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	
     	itemList = db.getAllItems();
     	EditedItemList = db.getAllItems();
@@ -203,7 +203,7 @@ public class AdminAct extends Activity {
     
     private void clearInfos(){
     	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	
     	et_name.setText("");
     	et_price.setText("");

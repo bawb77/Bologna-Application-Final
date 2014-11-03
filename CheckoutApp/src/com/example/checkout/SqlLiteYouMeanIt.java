@@ -19,7 +19,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final String ITEM = "item";
 	private static final String PRICE = "price";
 	private static final String ID = "itemId";
-	private static final String GROUP = "group";
+	private static final String GROUP = "groupId";
 	private static final String PIC = "pic";
 	
 	private static final String TABLE_LOGS = "Logs";	

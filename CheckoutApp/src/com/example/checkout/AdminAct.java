@@ -16,8 +16,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
-public class Admin extends Activity {
-	//array lists for managing items and inventory
+
+public class AdminAct extends Activity {
+//array lists for managing items and inventory
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> EditedItemList = new ArrayList<Items>();
 	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
@@ -41,7 +42,7 @@ public class Admin extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin);
+        setContentView(R.layout.activity_admin);
 
         getWindow().setSoftInputMode(
   		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

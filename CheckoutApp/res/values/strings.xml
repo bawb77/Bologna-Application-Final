@@ -14,14 +14,16 @@
     <string name="totalTax">With 15% Tax</string>
     <string name="cash">Cash</string>
     <string name="hint">0.00</string>
-	<string name="admin">Admin</string>
-	<string name="cashb">Cash Back</string>
-	<string name="search">Enter Search Here</string>
-	<string name="clear">Clear All</string>
-	<string name="update">Update Product</string>
-	<string name="delete">Delete Product</string>
-	<string name="pname">Product Name</string>
-	<string name="pprice">Product Price</string>
-	<string name="returnTC">Return to Checkout</string>
-	
+    <string name="admin">Admin</string>
+    <string name="cashb">Cash Back</string>
+    <string name="search">Enter Search Here</string>
+    <string name="clear">Clear All</string>
+    <string name="update">Update Product</string>
+    <string name="delete">Delete Product</string>
+    <string name="pname">Product Name</string>
+    <string name="pprice">Product Price</string>
+    <string name="returnTC">Return to Checkout</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_admin">AdminAct</string>
+
 </resources>

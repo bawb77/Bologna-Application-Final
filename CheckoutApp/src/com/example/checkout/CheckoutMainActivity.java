@@ -81,15 +81,15 @@ public class CheckoutMainActivity extends Activity {
         if(itemList.isEmpty())
         {Log.v("ALC", "Fill her up");
         itemList.add(new Items("Gift Card",10.99,1,nopic,0));
-        itemList.add(new Items("Cheese",9.00,2,grocery,1));
-        itemList.add(new Items("Brake Pads",50.34,3,auto,2));
-        itemList.add(new Items("Herbal Shampoo",5.34,4,bath,3));
-        itemList.add(new Items("Hulk Smash Hands",12.99,5,toys,4));
-        itemList.add(new Items("BlenderTech Blender",99.67,6,kitchen,5));
-        itemList.add(new Items("Hugs T-Shirt",1.00,7,clothes,6));
-        itemList.add(new Items("Celery",0.99, 8, grocery, 1));
-        itemList.add(new Items("Milk 2%",3.50,9, grocery, 1));
-        itemList.add(new Items("Ritz Crackers",0.01,10, grocery, 1));
+        itemList.add(new Items("Cheese",9.00,2,nopic,1));
+        itemList.add(new Items("Brake Pads",50.34,3,nopic,2));
+        itemList.add(new Items("Herbal Shampoo",5.34,4,nopic,3));
+        itemList.add(new Items("Hulk Smash Hands",12.99,5,nopic,4));
+        itemList.add(new Items("BlenderTech Blender",99.67,6,nopic,5));
+        itemList.add(new Items("Hugs T-Shirt",1.00,7,nopic,6));
+        itemList.add(new Items("Celery",0.99, 8, nopic, 1));
+        itemList.add(new Items("Milk 2%",3.50,9, nopic, 1));
+        itemList.add(new Items("Ritz Crackers",0.01,10, nopic, 1));
         db.addGroupResults(itemList);
         }
         EditedItemList = db.getAllItems();

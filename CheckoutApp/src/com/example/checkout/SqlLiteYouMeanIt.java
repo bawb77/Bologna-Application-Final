@@ -100,7 +100,6 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 				Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapdata , 0, bitmapdata .length);
 				item = new Items(cursor.getString(1), cursor.getDouble(2), cursor.getInt(3), bitmap, cursor.getInt(4));
 				tempArray.add(item);
-				bitmap.recycle();
 			}while(cursor.moveToNext());
 		}
 		return tempArray;

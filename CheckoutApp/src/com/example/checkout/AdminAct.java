@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ public class AdminAct extends Activity {
 	boolean discount10;
 	EditText searchText;
 	
+	ImageView iv_group;
 	EditText et_name;
 	EditText et_price;
 	boolean createNewItem;
@@ -63,6 +66,7 @@ public class AdminAct extends Activity {
         
         et_name = (EditText)findViewById(R.id.pNDisplay);
         et_price = (EditText)findViewById(R.id.pPDisplay);
+        iv_group = (ImageView)findViewById(R.id.iv_group);
         
         date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
         
@@ -141,6 +145,9 @@ public class AdminAct extends Activity {
     	et_name.setText(item.item);
     	et_price.setText(item.price + "");
     	
+    	iv_group.setImageBitmap(item.getPic());
+    	iv_group.setVisibility(ImageView.VISIBLE);
+    	
     	selectedItem = item.itemId;
     	
     	createNewItem = false;
@@ -175,13 +182,18 @@ public class AdminAct extends Activity {
 				builder.show();	
     		} else
     		{
-    			Items item = EditedItemList.get(selectedItem);
-    			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, item.pic);
+    			for(Items item : EditedItemList){
+    				if(item.itemId == selectedItem){
+    					Bitmap bitmap = ((BitmapDrawable)iv_group.getDrawable()).getBitmap();
+		    			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, bitmap);
+		    			
+		    			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
+		    			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));
+		    			clearInfos();
+		    			update();
+    				}
+    			}
     			
-    			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
-    			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));
-    			clearInfos();
-    			update();
     		}
     	} else{
     		Toast.makeText(getBaseContext(), "Product name and price have to be filled.", Toast.LENGTH_SHORT).show();
@@ -194,13 +206,29 @@ public class AdminAct extends Activity {
                    InputMethodManager.HIDE_NOT_ALWAYS);
     }
     
+    public void changeGroup(View v)
+    {
+    	//create alert dialog
+		ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap);
+		AlertDialog.Builder builder = new AlertDialog.Builder(AdminAct.this);
+		builder.setTitle("Select Type of Good");
+		//set question answer choices
+		builder.setSingleChoiceItems(adapter, -1 , new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int choice) {
+				iv_group.setImageBitmap(picMap[choice]);
+				dialog.dismiss();
+        	}
+		}); 
+		//create and then show the alert dialog
+		builder.create();
+		builder.show();	
+    }
+    
     public void deleteP(View v)
     {
     	db.deleteItem(selectedItem);
     	Toast.makeText(getBaseContext(), et_name.getText().toString() + " was deleted.", Toast.LENGTH_SHORT).show();
     	db.addLog(new LogItem(et_name.getText().toString() + " was deleted", date_today, 2));
-    	
-    	
     	
     	clearInfos();
     	update();
@@ -218,6 +246,8 @@ public class AdminAct extends Activity {
     	et_price.setText("");
     	createNewItem = true;
     	selectedItem = 0;
+    	
+    	iv_group.setVisibility(ImageView.INVISIBLE);
     }
     
     public void returnToCheckout(View v)

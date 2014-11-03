@@ -48,6 +48,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
+            <ImageButton
+                android:id="@+id/iv_group"
+                android:layout_width="178dp"
+                android:layout_height="175dp"
+                android:layout_gravity="center"
+                android:onClick="changeGroup"
+                android:src="@drawable/nopic"
+                android:visibility="invisible" />
+
             <TextView
                 android:id="@+id/pNameTextView"
                 android:layout_width="wrap_content"

@@ -4,8 +4,10 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.print.PrintManager;
 import android.view.View;
 
 public class ShowLogs extends Activity {
@@ -27,9 +29,20 @@ public class ShowLogs extends Activity {
 		diaBox.show();
 	}
 	
+	public void printLogs(View v){
+		PrintManager printManager = (PrintManager) this
+	            .getSystemService(Context.PRINT_SERVICE);
+
+	    String jobName = this.getString(R.string.app_name) + 
+                        " Document";
+
+	    printManager.print(jobName, new PrintLogsAdapter(this),
+	             null);
+	}
+	
 	 private AlertDialog AskOption()
 	 {
-	    AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this) 
+	    AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this) 
 	        //set message, title, and icon
 	        .setTitle("Delete") 
 	        .setMessage("Do you really want to delete all logs?")

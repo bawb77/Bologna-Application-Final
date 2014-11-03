@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -53,8 +55,11 @@ public class AdminAct extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
        
         //starting Items for Grid
         db = new SqlLiteYouMeanIt(this);
@@ -96,9 +101,6 @@ public class AdminAct extends Activity {
     }
     public void update()
     {
-    	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    	
     	itemList = db.getAllItems();
     	EditedItemList = db.getAllItems();
     	editMainList();
@@ -185,6 +187,12 @@ public class AdminAct extends Activity {
     		}
     	}
     	update();
+    	
+    	InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
     }
     
     public void deleteP(View v)
@@ -202,9 +210,6 @@ public class AdminAct extends Activity {
     }
     
     private void clearInfos(){
-    	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    	
     	et_name.setText("");
     	et_price.setText("");
     	createNewItem = true;

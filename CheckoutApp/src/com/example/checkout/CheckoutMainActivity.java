@@ -230,7 +230,7 @@ public class CheckoutMainActivity extends Activity {
     public void updateCart()
     {
     	ListView cList = (ListView)findViewById(R.id.cartList);
-    	customGridAdapterCart = new CustomGridViewAdapterCart(this, R.layout.row_grid, cartItems);
+    	customGridAdapterCart = new CustomGridViewAdapterCart(this, R.layout.cart_row_grid, cartItems);
         cList.setAdapter(customGridAdapterCart);
         displayTotal(calcTotal());
     }

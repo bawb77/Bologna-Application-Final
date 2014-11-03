@@ -102,7 +102,7 @@ public class AdminAct extends Activity {
     public void mainListDisplay()
     { 
     	//link GridView to itemlist
-    	ItemGrid = (GridView)findViewById(R.id.itemGrid);
+    	ItemGrid = (GridView)findViewById(R.id.itemGrida);
         customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, EditedItemList);
         ItemGrid.setAdapter(customGridAdapter);
         //set onClick listener for the GridView
@@ -126,7 +126,7 @@ public class AdminAct extends Activity {
     	createNewItem = false;
     }
     
-    public void updatePN()
+    public void updatePN(View v)
     {
     	if(et_name.getText().toString() != "" && et_price.getText().toString() != ""){
     		if(createNewItem)
@@ -148,7 +148,7 @@ public class AdminAct extends Activity {
     	}
     }
     
-    public void deleteP()
+    public void deleteP(View v)
     {
     	db.deleteItem(selectedItem);
     	Toast.makeText(getBaseContext(), et_name.getText().toString() + " was deleted.", Toast.LENGTH_SHORT).show();
@@ -157,7 +157,7 @@ public class AdminAct extends Activity {
     	clearInfos();
     }
     
-    public void clear(){
+    public void clear(View v){
     	clearInfos();
     }
     
@@ -168,7 +168,7 @@ public class AdminAct extends Activity {
     	selectedItem = 0;
     }
     
-    public void returnToCheckout()
+    public void returnToCheckout(View v)
     {
     	super.onBackPressed();
     	finish();

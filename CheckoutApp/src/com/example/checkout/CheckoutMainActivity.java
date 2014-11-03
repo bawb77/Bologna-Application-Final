@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 public class CheckoutMainActivity extends Activity {
@@ -57,7 +58,7 @@ public class CheckoutMainActivity extends Activity {
         Total = 0.00;
         // set starting total to EditText box
         String stringdouble= Double.toString(Total);
-        EditText totalText = (EditText) findViewById(R.id.total);
+        TextView totalText = (TextView) findViewById(R.id.total);
         totalText.setText(stringdouble);
         discount5 = false;
         discount10 = false;
@@ -167,7 +168,7 @@ public class CheckoutMainActivity extends Activity {
     //display the current total
     public void displayTotal (double d)
     {
-		EditText totalText = (EditText) findViewById(R.id.total);
+		TextView totalText = (TextView) findViewById(R.id.total);
 		DecimalFormat df = new DecimalFormat("#.##");
 		totalText.setText(df.format(d));
 		displayTax(addTax(d));
@@ -175,7 +176,7 @@ public class CheckoutMainActivity extends Activity {
     //display total plus tax
     public void displayTax (double d)
     {
-    	EditText totalText = (EditText) findViewById(R.id.withTax);
+    	TextView totalText = (TextView) findViewById(R.id.withTax);
 		DecimalFormat df = new DecimalFormat("#.##");
 		totalText.setText(df.format(d));
     }
@@ -233,6 +234,10 @@ public class CheckoutMainActivity extends Activity {
     	customGridAdapterCart = new CustomGridViewAdapterCart(this, R.layout.cart_row_grid, cartItems);
         cList.setAdapter(customGridAdapterCart);
         displayTotal(calcTotal());
+        ((ToggleButton)findViewById(R.id.Discount5)).setChecked(false);
+        ((ToggleButton)findViewById(R.id.Discount10)).setChecked(false);
+        discount5 = false;
+        discount10 = false;
     }
     //toggle a 5% discount to the current total and recalculate
     public void Dis5(View v)

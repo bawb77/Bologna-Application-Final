@@ -45,6 +45,10 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 				")";
 		db.execSQL(CREATE_RESULTS_TABLE);
 		
+		createLogsTable(db);
+	}
+	
+	public void createLogsTable(SQLiteDatabase db){
 		String CREATE_LOGS_TABLE = "CREATE TABLE " + TABLE_LOGS + "(" +
 				KEY_LID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				KEY_VALUE + " STRING," +
@@ -209,5 +213,11 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 			}while(cursor.moveToNext());
 		}
 		return tempArray;
+	}
+	
+	public void deleteAllLogs(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGS);
+		createLogsTable(db);
 	}
 }

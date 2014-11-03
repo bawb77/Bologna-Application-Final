@@ -26,7 +26,8 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final String KEY_LID = "id";
 	private static final String KEY_VALUE = "value";
 	private static final String KEY_DATE = "day";
-
+	private static final String KEY_USER = "user";
+	
 	public SqlLiteYouMeanIt(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		// TODO Auto-generated constructor stub
@@ -47,7 +48,8 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		String CREATE_LOGS_TABLE = "CREATE TABLE " + TABLE_LOGS + "(" +
 				KEY_LID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				KEY_VALUE + " STRING," +
-				KEY_DATE + " STRING" +
+				KEY_DATE + " STRING, " +
+				KEY_USER + " INTEGER" +
 				")";
 		db.execSQL(CREATE_LOGS_TABLE);
 	}
@@ -168,6 +170,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		
 		values.put(KEY_VALUE, log.value);
 		values.put(KEY_DATE, log.date);
+		values.put(KEY_USER, log.user_type);
 		
 		db.insert(TABLE_LOGS, null, values);
 		db.close();
@@ -184,7 +187,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		{
 			do
 			{
-				log = new LogItem(cursor.getString(0), cursor.getString(1));
+				log = new LogItem(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
 				tempArray.add(log);
 			}while(cursor.moveToNext());
 		}
@@ -201,7 +204,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		{
 			do
 			{
-				log = new LogItem(cursor.getString(0), cursor.getString(1));
+				log = new LogItem(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
 				tempArray.add(log);
 			}while(cursor.moveToNext());
 		}

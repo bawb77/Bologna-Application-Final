@@ -2,10 +2,13 @@ package com.example.checkout;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.app.Activity;
 //imports
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -39,6 +42,9 @@ public class CheckoutMainActivity extends Activity {
 	boolean discount10;
 	EditText searchText;
 	
+	String date_today;
+	
+	SqlLiteYouMeanIt db;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,12 @@ public class CheckoutMainActivity extends Activity {
         discount5 = false;
         discount10 = false;
         //starting Items for Grid
-        SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
+        db = new SqlLiteYouMeanIt(this);
+        
+        date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
+        
+        db.addLog(new LogItem("Opened App", date_today, 0));
+        
         itemList = db.getAllItems();
         
         Bitmap nopic = BitmapFactory.decodeResource(this.getResources(), R.drawable.nopic);//0
@@ -110,7 +121,6 @@ public class CheckoutMainActivity extends Activity {
     	{
     		for(Items tempItem: itemList)
     		{
-    			Log.v("ALC", tempItem.item);
     			if(tempItem.item.toLowerCase().startsWith(filter))
     			{
     				EditedItemList.add(tempItem);
@@ -118,11 +128,14 @@ public class CheckoutMainActivity extends Activity {
     		}
     	}
     }
+    
     public void clearAll(View v)
     {
+    	db.addLog(new LogItem("Cleared cart", date_today, 1));
     	cartItems.removeAll(cartItems);
     	updateCart();
     }
+    
     public void mainListDisplay()
     { 
     	//link GridView to itemlist
@@ -193,6 +206,8 @@ public class CheckoutMainActivity extends Activity {
 		    		}
     			});
     	}	
+    	
+    	db.addLog(new LogItem("Added " + EditedItemList.get(i).getItem() + " to the cart", date_today, 1));
     }
     //remove items from the checkout cart and update the totals
     public void exterminateItem(View v, int position)
@@ -201,13 +216,15 @@ public class CheckoutMainActivity extends Activity {
     	{
     		cartItems.get(position).setQuantity(cartItems.get(position).getQuantity() - 1);
     		updateCart();
+    		db.addLog(new LogItem("Removed " + cartItems.get(position).getItem() + " from cart", date_today, 1));
     	}
     	else 
     	{
-    	cartItems.remove(position);
-    	updateCart();
-    	}
+    		db.addLog(new LogItem("Removed " + cartItems.get(position).getItem() + "from cart", date_today, 1));
     	
+    		cartItems.remove(position);
+    		updateCart();
+    	}
     }
     //update the display of the cart with the current arraylist of objects added
     public void updateCart()
@@ -224,10 +241,12 @@ public class CheckoutMainActivity extends Activity {
     	{
     		boolean on = ((ToggleButton) v).isChecked();
         if (on) {
+        	db.addLog(new LogItem("Set discount 5%", date_today, 1));
         	displayTotal(calcTotal() - (calcTotal()*0.05));
         	discount5 = true;
         }
         else {
+        	db.addLog(new LogItem("Set to no discount", date_today, 1));
         	displayTotal(calcTotal());
         	discount5=false;
         }
@@ -245,10 +264,12 @@ public class CheckoutMainActivity extends Activity {
     	{
     			boolean on = ((ToggleButton) v).isChecked();
         if (on) {
+        	db.addLog(new LogItem("Set discount 10%", date_today, 1));
         	displayTotal(calcTotal() - (calcTotal()*0.10));
         	discount10 = true;
         }
         else {
+        	db.addLog(new LogItem("Set to no discount", date_today, 1));
         	displayTotal(calcTotal());
         	discount10 = false;
         }
@@ -262,6 +283,8 @@ public class CheckoutMainActivity extends Activity {
     //add 15% tax to passed double amount
     public double addTax(double d)
     {
+    	db.addLog(new LogItem("Added taxes", date_today, 1));
+    	
     	d = d * 1.15;
     	return d;
     }
@@ -280,18 +303,22 @@ public class CheckoutMainActivity extends Activity {
     	builder.setButton(AlertDialog.BUTTON_POSITIVE, "Visa", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				db.addLog(new LogItem("Payment method: Visa", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Visa", Toast.LENGTH_LONG).show();
 			}//visa
 		});
     	builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Debit", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				db.addLog(new LogItem("Payment method: Debit", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Debit", Toast.LENGTH_LONG).show();
 			}//debit
 		});
     	builder.setButton(AlertDialog.BUTTON_NEUTRAL, "Cash", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				db.addLog(new LogItem("Payment method: Cash", date_today, 1));
+				
 				//create change alert box
 				AlertDialog builder2 = new AlertDialog.Builder(CheckoutMainActivity.this).create();
 				DecimalFormat df = new DecimalFormat("#.##");
@@ -319,11 +346,14 @@ public class CheckoutMainActivity extends Activity {
     	cartItems.clear();
     	updateCart();
     	displayTotal(calcTotal());
+    	
+    	db.addLog(new LogItem("Payment done", date_today, 1));
     }
     public void adminClick(View v)
     {
-    	
+    	startActivity(new Intent(this, Admin.class));
     }
+    
     public void cashBack(View v)
     {
     	final EditText input = new EditText(this);
@@ -351,8 +381,14 @@ public class CheckoutMainActivity extends Activity {
 			}
 		});
     	builder.show();
-    
     }
+    
+    @Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -2,7 +2,6 @@ package com.example.checkout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -140,7 +139,7 @@ public class AdminAct extends Activity {
     		} else
     		{
     			Items item = EditedItemList.get(selectedItem);
-    			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, null);
+    			db.changeItem(item, et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), item.group, item.pic);
     			
     			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
     			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));

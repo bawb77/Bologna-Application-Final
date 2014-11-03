@@ -145,10 +145,10 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		
-		String sql = "SELECT last_insert_rowid()";
+		String sql = "SELECT " + ID + " FROM " + TABLE_RESULTS;
 		Cursor cursor = db.rawQuery(sql, null);
 		
-		if (cursor.moveToFirst()) {
+		if (cursor.moveToLast()) {
 		       id = Integer.parseInt(cursor.getString(0));
 		   }
 		

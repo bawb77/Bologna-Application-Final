@@ -97,10 +97,7 @@ public class AdminAct extends Activity {
         	  
     }
     public void update()
-    {
-    	getWindow().setSoftInputMode(
-  		      WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    	
+    {    	
     	itemList = db.getAllItems();
     	EditedItemList = db.getAllItems();
     	editMainList();
@@ -110,12 +107,10 @@ public class AdminAct extends Activity {
     	EditedItemList.clear();
     	
     	String filter = searchText.getText().toString().toLowerCase();
-    	Log.v("ALC", filter);
     	if(!itemList.isEmpty())
     	{
     		for(Items tempItem: itemList)
     		{
-    			Log.v("ALC", tempItem.item);
     			if(tempItem.item.toLowerCase().startsWith(filter))
     			{
     				EditedItemList.add(tempItem);
@@ -153,7 +148,7 @@ public class AdminAct extends Activity {
     
     public void updatePN(View v)
     {
-    	if(et_name.getText().toString() != "" && et_price.getText().toString() != "")
+    	if(!et_name.getText().toString().matches("") && !et_price.getText().toString().matches(""))
     	{
     		if(createNewItem)
     		{
@@ -165,12 +160,14 @@ public class AdminAct extends Activity {
 				builder.setSingleChoiceItems(adapter, -1 , new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int choice) {
 						Integer new_id = db.getLastId() + 1;
+						Log.v("ALC", new_id + " id");
 						Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, picMap[choice] , 0);
 						db.addResult(item);
 						Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
 						db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));
 						dialog.dismiss();
 						clearInfos();
+						update();
 	            	}
 				}); 
 				//create and then show the alert dialog
@@ -184,9 +181,11 @@ public class AdminAct extends Activity {
     			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
     			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));
     			clearInfos();
+    			update();
     		}
+    	} else{
+    		Toast.makeText(getBaseContext(), "Product name and price have to be filled.", Toast.LENGTH_SHORT).show();
     	}
-    	update();
     	
     	InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE); 
@@ -200,6 +199,8 @@ public class AdminAct extends Activity {
     	db.deleteItem(selectedItem);
     	Toast.makeText(getBaseContext(), et_name.getText().toString() + " was deleted.", Toast.LENGTH_SHORT).show();
     	db.addLog(new LogItem(et_name.getText().toString() + " was deleted", date_today, 2));
+    	
+    	
     	
     	clearInfos();
     	update();

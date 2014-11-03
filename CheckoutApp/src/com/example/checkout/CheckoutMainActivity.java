@@ -303,6 +303,7 @@ public class CheckoutMainActivity extends Activity {
     	//input for cash back
     	final EditText input = new EditText(this);
     	final TextView changeResult = new TextView(this);
+    	changeResult.setTextColor(android.graphics.Color.WHITE);
     	input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     	//create alert box
     	builder.setTitle(R.string.payment);
@@ -344,26 +345,27 @@ public class CheckoutMainActivity extends Activity {
 								DecimalFormat df = new DecimalFormat("#.##");
 							
 							double tempTotal = num - checkoutTotal;
-							double c20b = tempTotal / 20;
+							int c20b = (int) (tempTotal / 20);
 							tempTotal = tempTotal % 20;
-							double c10b = tempTotal / 10;
+							int c10b = (int) (tempTotal / 10);
 							tempTotal = tempTotal % 10;
-							double c5b = tempTotal / 5;
+							int c5b = (int) (tempTotal / 5);
 							tempTotal = tempTotal % 5;
-							double c2d = tempTotal /2;
+							int c2d = (int) (tempTotal /2);
 							tempTotal = tempTotal % 2;
-							double c1d = tempTotal /1;
+							int c1d = (int) (tempTotal /1);
 							tempTotal = tempTotal % 1;
-							double c25d = tempTotal /0.25;
+							int c25d = (int) (tempTotal /0.25);
 							tempTotal = tempTotal % 0.25;
-							double c10d = tempTotal /0.10;
+							int c10d = (int) (tempTotal /0.10);
 							tempTotal = tempTotal % 0.10;
-							double c5d = tempTotal / 0.05;
-							String tempChange = " " + c20b + " 20 dollar bills, " + c10b + " 10 dollar bills, " + c5b + " 5 dollar bills, " + c2d + " Toonies," + c1d + " Loonies, " + c25d + " quaters, " + c10d + " Dimes, and " + c5d + " nickels.";
+							int c5d = (int) (tempTotal / 0.05);
+							String tempChange = " " + c20b + " 20 dollar bill, " + c10b + " 10 dollar bill, " + c5b + " 5 dollar bill, " + c2d + " Toonie," + c1d + " Loonie, " + c25d + " Quater, " + c10d + " Dime, and " + c5d + " nickel.";
 							//Inform user of change required
 							//Toast.makeText(getBaseContext(), "Change Due: $"+ df.format(num - checkoutTotal), Toast.LENGTH_LONG).show();
 							AlertDialog builder3 = new AlertDialog.Builder(CheckoutMainActivity.this).create();
 					    	builder3.setTitle("Correct Change for " + df.format(num - checkoutTotal));
+					    	
 					    	changeResult.setText(tempChange);
 					    	builder3.setView(changeResult);
 					    	//onclick for after cash received

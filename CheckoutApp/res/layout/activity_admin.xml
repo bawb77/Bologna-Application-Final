@@ -29,6 +29,7 @@
                 android:layout_weight="12.38"
                 android:ems="10"
                 android:hint="@string/search"
+                android:minLines="1"
                 android:textSize="30sp" />
 
             <GridView

@@ -31,6 +31,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.checkout.CheckoutMainActivity" />
         </activity>
+        <activity android:name="ShowLogs"></activity>
     </application>
 
 </manifest>

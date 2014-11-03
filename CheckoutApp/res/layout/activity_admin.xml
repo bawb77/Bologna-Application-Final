@@ -42,7 +42,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="254dp"
+            android:layout_width="309dp"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
@@ -96,6 +96,13 @@
                     android:layout_gravity="right"
                     android:onClick="deleteP"
                     android:text="@string/delete" />
+
+                <Button
+                    android:id="@+id/clearButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="clear"
+                    android:text="@string/clear" />
 
             </LinearLayout>
 

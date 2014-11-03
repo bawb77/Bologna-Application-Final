@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,7 +28,6 @@ public class AdminAct extends Activity {
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> EditedItemList = new ArrayList<Items>();
 	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
-	//Drawable[] pic;
 	Bitmap[] picMap;
 	// layout item instantiation
 	GridView ItemGrid;
@@ -86,14 +84,6 @@ public class AdminAct extends Activity {
 			@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
 			@Override public void onTextChanged(CharSequence s, int start, int before,int count) {}
         }); 
- /*       pic = new Drawable[]{getResources().getDrawable( R.drawable.nopic),
-        		getResources().getDrawable(R.drawable.groceries),
-        		getResources().getDrawable(R.drawable.automotive),
-        		getResources().getDrawable(R.drawable.bath),
-        		getResources().getDrawable(R.drawable.toys),
-        		getResources().getDrawable(R.drawable.kitchenware),
-        		getResources().getDrawable(R.drawable.clothes),
-        		};*/
         Bitmap nopic = BitmapFactory.decodeResource(this.getResources(), R.drawable.nopic);//0
         Bitmap grocery = BitmapFactory.decodeResource(this.getResources(), R.drawable.groceries);//1
         Bitmap auto = BitmapFactory.decodeResource(this.getResources(), R.drawable.automotive);//2
@@ -158,8 +148,8 @@ public class AdminAct extends Activity {
     
     public void updatePN(View v)
     {
-    	
-    	if(et_name.getText().toString() != "" && et_price.getText().toString() != ""){
+    	if(et_name.getText().toString() != "" && et_price.getText().toString() != "")
+    	{
     		if(createNewItem)
     		{
 				//create alert dialog
@@ -172,7 +162,6 @@ public class AdminAct extends Activity {
 						Integer new_id = db.getLastId() + 1;
 						Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, picMap[choice] , 0);
 						db.addResult(item);
-    			
 						Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
 						db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));
 						dialog.dismiss();
@@ -181,9 +170,7 @@ public class AdminAct extends Activity {
 				}); 
 				//create and then show the alert dialog
 				builder.create();
-				builder.show();
-				
-    			
+				builder.show();	
     		} else
     		{
     			Items item = EditedItemList.get(selectedItem);

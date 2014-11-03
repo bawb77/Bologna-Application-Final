@@ -9,15 +9,26 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.print.PrintManager;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 
 public class ShowLogs extends Activity {
 	
 	List<LogItem> logs;
+	
+	Button bt_print;
+	Button bt_return;
+	ListView lv_logs;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_logs);
+	    
+	    bt_print = (Button)findViewById(R.id.bt_print);
+	    bt_return = (Button)findViewById(R.id.bt_retAP);
+	    lv_logs = (ListView)findViewById(R.id.lv_logs);
 	
 	    SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
 	    

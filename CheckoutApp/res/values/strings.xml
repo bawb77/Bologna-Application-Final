@@ -28,5 +28,6 @@
     <string name="log_title">Logs:</string>
     <string name="print">Print Logs</string>
     <string name="returnAP">Return to Admin Page</string>
+    <string name="showLogs">Show Logs</string>
 
 </resources>

@@ -3,6 +3,11 @@ package com.example.checkout;
 import java.util.ArrayList;
 import java.util.Calendar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 public class AdminAct extends Activity {
@@ -23,6 +29,8 @@ public class AdminAct extends Activity {
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> EditedItemList = new ArrayList<Items>();
 	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
+	//Drawable[] pic;
+	Bitmap[] picMap;
 	// layout item instantiation
 	GridView ItemGrid;
 	CustomGridViewAdapter customGridAdapter;
@@ -74,12 +82,34 @@ public class AdminAct extends Activity {
         searchText.addTextChangedListener(new TextWatcher(){
         	public void afterTextChanged(Editable s) {
         		editMainList();
-        		mainListDisplay();
         	}
 			@Override public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
 			@Override public void onTextChanged(CharSequence s, int start, int before,int count) {}
-        });   
-    } 
+        }); 
+ /*       pic = new Drawable[]{getResources().getDrawable( R.drawable.nopic),
+        		getResources().getDrawable(R.drawable.groceries),
+        		getResources().getDrawable(R.drawable.automotive),
+        		getResources().getDrawable(R.drawable.bath),
+        		getResources().getDrawable(R.drawable.toys),
+        		getResources().getDrawable(R.drawable.kitchenware),
+        		getResources().getDrawable(R.drawable.clothes),
+        		};*/
+        Bitmap nopic = BitmapFactory.decodeResource(this.getResources(), R.drawable.nopic);//0
+        Bitmap grocery = BitmapFactory.decodeResource(this.getResources(), R.drawable.groceries);//1
+        Bitmap auto = BitmapFactory.decodeResource(this.getResources(), R.drawable.automotive);//2
+        Bitmap bath = BitmapFactory.decodeResource(this.getResources(), R.drawable.bath);//3
+        Bitmap toys = BitmapFactory.decodeResource(this.getResources(), R.drawable.toys);//4
+        Bitmap kitchen = BitmapFactory.decodeResource(this.getResources(), R.drawable.kitchenware);//5
+        Bitmap clothes = BitmapFactory.decodeResource(this.getResources(), R.drawable.clothes);//6
+        picMap = new Bitmap[]{nopic,grocery,auto,bath,toys,kitchen,clothes};
+        	  
+    }
+    public void update()
+    {
+    	itemList = db.getAllItems();
+    	EditedItemList = db.getAllItems();
+    	editMainList();
+    }
     public void editMainList()
     {
     	EditedItemList.clear();
@@ -97,6 +127,7 @@ public class AdminAct extends Activity {
     			}
     		}
     	}
+    	mainListDisplay();
     }
     public void mainListDisplay()
     { 
@@ -127,15 +158,32 @@ public class AdminAct extends Activity {
     
     public void updatePN(View v)
     {
+    	
     	if(et_name.getText().toString() != "" && et_price.getText().toString() != ""){
     		if(createNewItem)
     		{
-    			Integer new_id = db.getLastId() + 1;
-    			Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, null, 0);
-    			db.addResult(item);
+				//create alert dialog
+    			ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap);
+				AlertDialog.Builder builder = new AlertDialog.Builder(AdminAct.this);
+				builder.setTitle("Select Type of Good");
+				//set question answer choices
+				builder.setSingleChoiceItems(adapter, -1 , new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int choice) {
+						Integer new_id = db.getLastId() + 1;
+						Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, picMap[choice] , 0);
+						db.addResult(item);
     			
-    			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
-    			db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));
+						Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
+						db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));
+						dialog.dismiss();
+						clearInfos();
+	            	}
+				}); 
+				//create and then show the alert dialog
+				builder.create();
+				builder.show();
+				
+    			
     		} else
     		{
     			Items item = EditedItemList.get(selectedItem);
@@ -143,8 +191,10 @@ public class AdminAct extends Activity {
     			
     			Toast.makeText(getBaseContext(), et_name.getText().toString() + " was changed.", Toast.LENGTH_SHORT).show();
     			db.addLog(new LogItem(et_name.getText().toString() + " was changed", date_today, 2));
+    			clearInfos();
     		}
     	}
+    	update();
     }
     
     public void deleteP(View v)
@@ -154,6 +204,7 @@ public class AdminAct extends Activity {
     	db.addLog(new LogItem(et_name.getText().toString() + " was deleted", date_today, 2));
     	
     	clearInfos();
+    	update();
     }
     
     public void clear(View v){

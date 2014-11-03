@@ -35,7 +35,7 @@ public final class R {
     public static final class id {
         public static final int Discount10=0x7f080013;
         public static final int Discount5=0x7f080014;
-        public static final int action_settings=0x7f080019;
+        public static final int action_settings=0x7f08001a;
         public static final int button1=0x7f080009;
         public static final int button3=0x7f08000e;
         public static final int cartList=0x7f08000d;
@@ -43,7 +43,8 @@ public final class R {
         public static final int deletePButton=0x7f080008;
         public static final int itemGrid=0x7f08000c;
         public static final int itemGrida=0x7f080002;
-        public static final int item_image=0x7f080018;
+        public static final int item_image=0x7f080019;
+        public static final int item_image_dialog=0x7f080018;
         public static final int item_price=0x7f080016;
         public static final int item_quantity=0x7f080017;
         public static final int item_text=0x7f080015;
@@ -64,7 +65,8 @@ public final class R {
         public static final int activity_admin=0x7f030000;
         public static final int activity_checkout_main=0x7f030001;
         public static final int cart_row_grid=0x7f030002;
-        public static final int row_grid=0x7f030003;
+        public static final int dialog_row=0x7f030003;
+        public static final int row_grid=0x7f030004;
     }
     public static final class menu {
         public static final int admin=0x7f070000;

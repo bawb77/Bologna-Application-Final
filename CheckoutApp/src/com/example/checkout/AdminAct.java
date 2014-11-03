@@ -171,13 +171,9 @@ public class AdminAct extends Activity {
     public void returnToCheckout()
     {
     	super.onBackPressed();
+    	finish();
     }
     
-    @Override
-	protected void onPause() {
-		super.onPause();
-		finish();
-	}
 	//remove items from the checkout cart and update the totals
     //update the display of the cart with the current arraylist of objects added
     @Override

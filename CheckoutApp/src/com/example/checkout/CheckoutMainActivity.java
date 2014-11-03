@@ -6,6 +6,8 @@ import android.app.Activity;
 //imports
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -56,18 +58,27 @@ public class CheckoutMainActivity extends Activity {
         //starting Items for Grid
         SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
         itemList = db.getAllItems();
+        
+        Bitmap nopic = BitmapFactory.decodeResource(this.getResources(), R.drawable.nopic);//0
+        Bitmap grocery = BitmapFactory.decodeResource(this.getResources(), R.drawable.groceries);//1
+        Bitmap auto = BitmapFactory.decodeResource(this.getResources(), R.drawable.automotive);//2
+        Bitmap bath = BitmapFactory.decodeResource(this.getResources(), R.drawable.bath);//3
+        Bitmap toys = BitmapFactory.decodeResource(this.getResources(), R.drawable.toys);//4
+        Bitmap kitchen = BitmapFactory.decodeResource(this.getResources(), R.drawable.kitchenware);//5
+        Bitmap clothes = BitmapFactory.decodeResource(this.getResources(), R.drawable.clothes);//6
+        
         if(itemList.isEmpty())
         {Log.v("ALC", "Fill her up");
-        itemList.add(new Items("A man's arm",1.99,1));
-        itemList.add(new Items("Wolverine",97.00,2));
-        itemList.add(new Items("A Bit of String",2.34,3));
-        itemList.add(new Items("FaceSucker",56.34,4));
-        itemList.add(new Items("Your Mother's love",0.00,5));
-        itemList.add(new Items("Armpit muncher",25.67,6));
-        itemList.add(new Items("Hugs",1.00,7));
-        itemList.add(new Items("A night at the Roxbury",300.00, 8));
-        itemList.add(new Items("Sucka",3.50,9));
-        itemList.add(new Items("Morgan Freeman",0.01,10));
+        itemList.add(new Items("Gift Card",10.99,1,nopic,0));
+        itemList.add(new Items("Cheese",9.00,2,grocery,1));
+        itemList.add(new Items("Brake Pads",50.34,3,auto,2));
+        itemList.add(new Items("Herbal Shampoo",5.34,4,bath,3));
+        itemList.add(new Items("Hulk Smash Hands",12.99,5,toys,4));
+        itemList.add(new Items("BlenderTech Blender",99.67,6,kitchen,5));
+        itemList.add(new Items("Hugs T-Shirt",1.00,7,clothes,6));
+        itemList.add(new Items("Celery",0.99, 8, grocery, 1));
+        itemList.add(new Items("Milk 2%",3.50,9, grocery, 1));
+        itemList.add(new Items("Ritz Crackers",0.01,10, grocery, 1));
         db.addGroupResults(itemList);
         }
         EditedItemList = db.getAllItems();

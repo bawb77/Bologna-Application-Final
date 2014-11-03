@@ -148,7 +148,7 @@ public class AdminAct extends Activity {
     
     public void updatePN(View v)
     {
-    	if(et_name.getText().toString() != "" && et_price.getText().toString() != "")
+    	if(!et_name.getText().toString().matches("") && !et_price.getText().toString().matches(""))
     	{
     		if(createNewItem)
     		{
@@ -183,6 +183,8 @@ public class AdminAct extends Activity {
     			clearInfos();
     			update();
     		}
+    	} else{
+    		Toast.makeText(getBaseContext(), "Product name and price have to be filled.", Toast.LENGTH_SHORT).show();
     	}
     	
     	InputMethodManager inputManager = (InputMethodManager)

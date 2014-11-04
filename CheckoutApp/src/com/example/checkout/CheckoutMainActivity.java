@@ -1,8 +1,10 @@
 package com.example.checkout;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 //imports
@@ -65,7 +67,10 @@ public class CheckoutMainActivity extends Activity {
         //starting Items for Grid
         db = new SqlLiteYouMeanIt(this);
         
-        date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
+        Date date = new Date();
+    	String dateFormat = "dd/MM/yyyy";
+    	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    	date_today = sdf.format(date);
         
         db.addLog(new LogItem("Opened App", date_today, 0));
         
@@ -117,7 +122,6 @@ public class CheckoutMainActivity extends Activity {
     	EditedItemList.clear();
     	
     	String filter = searchText.getText().toString().toLowerCase();
-    	Log.v("ALC", filter);
     	if(!itemList.isEmpty())
     	{
     		for(Items tempItem: itemList)
@@ -300,8 +304,6 @@ public class CheckoutMainActivity extends Activity {
     //add 15% tax to passed double amount
     public double addTax(double d)
     {
-    	db.addLog(new LogItem("Added taxes", date_today, 1));
-    	
     	d = d * 1.15;
     	return d;
     }
@@ -327,10 +329,10 @@ public class CheckoutMainActivity extends Activity {
 		    	updateCart();
 		    	displayTotal(calcTotal());
 		    	
-		    	db.addLog(new LogItem("Payment done", date_today, 1));
-				
 				db.addLog(new LogItem("Payment method: Visa", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Visa", Toast.LENGTH_LONG).show();
+			
+				db.addLog(new LogItem("Payment done", date_today, 1));
 			}//visa
 		});
     	builder.setButton(AlertDialog.BUTTON_NEGATIVE, "Debit", new DialogInterface.OnClickListener() {
@@ -340,11 +342,11 @@ public class CheckoutMainActivity extends Activity {
 		    	cartItems.clear();
 		    	updateCart();
 		    	displayTotal(calcTotal());
-		    	
-		    	db.addLog(new LogItem("Payment done", date_today, 1));
 				
 				db.addLog(new LogItem("Payment method: Debit", date_today, 1));
 				Toast.makeText(getBaseContext(), "Thanks for the Debit", Toast.LENGTH_LONG).show();
+				
+				db.addLog(new LogItem("Payment done", date_today, 1));
 			}//debit
 		});
     	builder.setButton(AlertDialog.BUTTON_NEUTRAL, "Cash", new DialogInterface.OnClickListener() {

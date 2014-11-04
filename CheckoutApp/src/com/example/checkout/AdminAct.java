@@ -1,7 +1,10 @@
 package com.example.checkout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -66,7 +69,11 @@ public class AdminAct extends Activity {
         et_price = (EditText)findViewById(R.id.pPDisplay);
         iv_group = (ImageView)findViewById(R.id.iv_group);
         
-        date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
+        Date date = new Date();
+    	String dateFormat = "dd/MM/yyyy";
+    	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    	date_today = sdf.format(date);
+    	
         createNewItem = true;
         
         itemList = db.getAllItems();

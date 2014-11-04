@@ -36,7 +36,11 @@ public class ShowLogs extends Activity {
 	    bt_return = (Button)findViewById(R.id.bt_retAP);
 	    lv_logs = (ListView)findViewById(R.id.lv_logs);
 	
-	    SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
+	    updateListView();
+	}
+	
+	private void updateListView(){
+		SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
 	    
 	    logs = new ArrayList<LogItem>();
 	    logs = db.getAllLogs();
@@ -92,6 +96,7 @@ public class ShowLogs extends Activity {
 	                //your deleting code
 	            	SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(getBaseContext());
 	        		db.deleteAllLogs();
+	        		updateListView();
 	                dialog.dismiss();
 	            }   
 

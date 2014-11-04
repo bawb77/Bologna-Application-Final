@@ -35,9 +35,10 @@ public final class R {
     public static final class id {
         public static final int Discount10=0x7f080016;
         public static final int Discount5=0x7f080017;
-        public static final int action_settings=0x7f080025;
+        public static final int action_settings=0x7f080027;
+        public static final int bt_deleteLogs=0x7f08001e;
         public static final int bt_print=0x7f08001c;
-        public static final int bt_retAP=0x7f08001e;
+        public static final int bt_retAP=0x7f080020;
         public static final int button1=0x7f08000a;
         public static final int button3=0x7f080011;
         public static final int cartList=0x7f080010;
@@ -46,11 +47,11 @@ public final class R {
         public static final int deletePButton=0x7f080008;
         public static final int itemGrid=0x7f08000f;
         public static final int itemGrida=0x7f080002;
-        public static final int item_image=0x7f080024;
-        public static final int item_image_dialog=0x7f080023;
-        public static final int item_price=0x7f080021;
-        public static final int item_quantity=0x7f080022;
-        public static final int item_text=0x7f080020;
+        public static final int item_image=0x7f080026;
+        public static final int item_image_dialog=0x7f080025;
+        public static final int item_price=0x7f080023;
+        public static final int item_quantity=0x7f080024;
+        public static final int item_text=0x7f080022;
         public static final int iv_group=0x7f08000c;
         public static final int linearLayout1=0x7f08000d;
         public static final int linearLayout1a=0x7f080000;
@@ -65,8 +66,9 @@ public final class R {
         public static final int textView1=0x7f080018;
         public static final int textView2=0x7f08001a;
         public static final int textView3=0x7f080019;
-        public static final int textView4=0x7f08001f;
-        public static final int textView5=0x7f08001d;
+        public static final int textView4=0x7f080021;
+        public static final int textView5=0x7f08001f;
+        public static final int textView6=0x7f08001d;
         public static final int total=0x7f080013;
         public static final int totalView=0x7f080012;
         public static final int updateButton=0x7f080007;
@@ -94,6 +96,7 @@ public final class R {
         public static final int clear=0x7f050010;
         public static final int confirm=0x7f050006;
         public static final int delete=0x7f050012;
+        public static final int deleteLogs=0x7f05001c;
         public static final int dis10=0x7f050008;
         public static final int dis5=0x7f050007;
         public static final int hello_world=0x7f050002;

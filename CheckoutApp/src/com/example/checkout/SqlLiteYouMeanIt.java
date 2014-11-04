@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 2;
@@ -191,7 +192,7 @@ public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 		{
 			do
 			{
-				log = new LogItem(cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+				log = new LogItem(cursor.getString(1), cursor.getString(2), cursor.getInt(3));
 				tempArray.add(log);
 			}while(cursor.moveToNext());
 		}

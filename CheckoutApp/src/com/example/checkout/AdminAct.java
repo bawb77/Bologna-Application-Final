@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -264,6 +265,10 @@ public class AdminAct extends Activity {
     	selectedItem = 0;
     	
     	iv_group.setVisibility(ImageView.INVISIBLE);
+    }
+    
+    public void showLogs(View v){
+    	startActivity(new Intent(this, ShowLogs.class));
     }
     
     public void returnToCheckout(View v)

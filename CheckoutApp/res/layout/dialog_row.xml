@@ -12,4 +12,10 @@
         android:layout_marginRight="10dp"
         android:src="@drawable/nopic" >
     </ImageView>
+    <TextView android:id="@+id/item_Desc"
+     android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+        android:textSize="25sp" >
+</TextView> 
 </LinearLayout>

@@ -439,6 +439,7 @@ public class CheckoutMainActivity extends Activity {
 						    	changeResult.setText(tempChange);
 						    	builder3.setView(changeResult);
 						    	//onclick for after cash received
+						    	hideKeyboard();
 						    	builder3.setButton(AlertDialog.BUTTON_POSITIVE, "Okay", new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {

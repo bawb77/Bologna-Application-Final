@@ -40,6 +40,7 @@ public class AdminAct extends Activity {
 	public static final String COMPLETE = "la.droid.qr.complete";
 	public static final String RESULT = "la.droid.qr.result";
 	Bitmap[] picMap;
+	String[] picMapNames;
 	// layout item instantiation
 	GridView ItemGrid;
 	CustomGridViewAdapter customGridAdapter;
@@ -59,6 +60,7 @@ public class AdminAct extends Activity {
 	
 	SqlLiteYouMeanIt db;
 	
+	String[] bitmap_names;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,8 @@ public class AdminAct extends Activity {
         Bitmap kitchen = BitmapFactory.decodeResource(this.getResources(), R.drawable.kitchenware);//5
         Bitmap clothes = BitmapFactory.decodeResource(this.getResources(), R.drawable.clothes);//6
         picMap = new Bitmap[]{nopic,grocery,auto,bath,toys,kitchen,clothes};
+        
+        picMapNames = new String[]{"No Picture","Groceries","Automotive","Bed and Bath","Toys","Kitchen","Clothes"};
        // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         	  
     }
@@ -149,10 +153,21 @@ public class AdminAct extends Activity {
 			String result = data.getExtras().getString(RESULT);
 			String[] temp = result.split(",");
 			//Just set result to EditText to be able to view it
-			
-			et_name.setText( temp[0] );
-			et_price.setText(temp[1]);
-			addItemToDatabase();
+			boolean duplicate = false;
+			for(Items tempItem: EditedItemList)
+    		{
+    			if(tempItem.item.equals(temp[0]))
+    			{
+    				Toast.makeText(getBaseContext(), "Item Already in database.", Toast.LENGTH_LONG).show();
+    				duplicate = true;
+    			}
+    		}	
+    		if(!duplicate)
+    		{
+    			et_name.setText( temp[0] );
+    			et_price.setText(temp[1]);
+    			addItemToDatabase();
+    		}
 		}
 	}
     public void update()
@@ -221,7 +236,7 @@ public class AdminAct extends Activity {
     		if(createNewItem)
     		{
 				//create alert dialog
-    			ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap);
+    			ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap, picMapNames);
 				AlertDialog.Builder builder = new AlertDialog.Builder(AdminAct.this);
 				builder.setTitle("Select Type of Good");
 				//set question answer choices
@@ -265,7 +280,7 @@ public class AdminAct extends Activity {
     public void changeGroup(View v)
     {
     	//create alert dialog
-		ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap);
+		ListAdapter adapter = new dialogAdapter(this,R.layout.dialog_row, picMap, picMapNames);
 		AlertDialog.Builder builder = new AlertDialog.Builder(AdminAct.this);
 		builder.setTitle("Select Type of Good");
 		//set question answer choices

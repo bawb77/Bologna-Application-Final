@@ -50,7 +50,21 @@
             android:id="@+id/bt_print"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="printLogs"
             android:text="@string/print"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/bt_deleteLogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="deleteLogs"
+            android:text="@string/deleteLogs"
             android:textSize="20sp" />
 
         <TextView
@@ -63,6 +77,7 @@
             android:id="@+id/bt_retAP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="returnToAdminPage"
             android:text="@string/returnAP"
             android:textSize="20sp" />
 

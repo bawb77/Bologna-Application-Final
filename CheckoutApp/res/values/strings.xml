@@ -29,5 +29,6 @@
     <string name="print">Print Logs</string>
     <string name="returnAP">Return to Admin Page</string>
     <string name="showLogs">Show Logs</string>
-
+	<string name="deleteLogs">Delete all Logs</string>
+    
 </resources>

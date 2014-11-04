@@ -1,5 +1,6 @@
 package com.example.checkout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -9,12 +10,17 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.print.PrintManager;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ShowLogs extends Activity {
 	
-	List<LogItem> logs;
+	ArrayList<LogItem> logs;
 	
 	Button bt_print;
 	Button bt_return;
@@ -32,7 +38,29 @@ public class ShowLogs extends Activity {
 	
 	    SqlLiteYouMeanIt db = new SqlLiteYouMeanIt(this);
 	    
+	    logs = new ArrayList<LogItem>();
 	    logs = db.getAllLogs();
+	    
+	    ArrayList<String> logs_str = new ArrayList<String>();
+	    for(LogItem item : logs){
+	    	String user = "";
+	    	if(item.user_type == 0){
+	    		user = "general";
+	    	} else if(item.user_type == 1){
+	    		user = "customer";
+	    	} else if(item.user_type == 2){
+	    		user = "admin";
+	    	}
+	    	
+	    	logs_str.add(user + " activity on " + item.date + ": " + item.value);
+	    }
+	    
+	    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this, 
+                android.R.layout.simple_list_item_1,
+                logs_str);
+
+        lv_logs.setAdapter(arrayAdapter); 
 	}
 
 	public void deleteLogs(View v){
@@ -80,5 +108,11 @@ public class ShowLogs extends Activity {
 	        .create();
 	        return myQuittingDialogBox;
 
+	    }
+	 
+	 public void returnToAdminPage(View v)
+	    {
+	    	super.onBackPressed();
+	    	finish();
 	    }
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,18 +36,39 @@ public class CustomGridViewAdapter extends ArrayAdapter<Items> {
 		if (row == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
-
 			holder = new RecordHolder();
 			//assign textviews
 			holder.itemName = (TextView) row.findViewById(R.id.item_text);
 			holder.itemPrice = (TextView) row.findViewById(R.id.item_price);
 			holder.itemImage = (ImageView) row.findViewById(R.id.item_image);
 			row.setTag(holder);
-		} else {
+		} 
+		else
+		{
 			holder = (RecordHolder) row.getTag();
 		}
 		//set data object to the correct textview
 		Items item = data.get(position);
+		int color = item.getGroup();
+		switch(color)
+			{
+		case 0:
+			break;
+		case 1:row.setBackgroundColor(Color.GREEN);
+			break;
+		case 2:row.setBackgroundColor(Color.RED);
+			break;
+		case 3:row.setBackgroundColor(Color.BLUE);
+			break;
+		case 4:row.setBackgroundColor(Color.CYAN);
+			break;
+		case 5:row.setBackgroundColor(Color.MAGENTA);
+			break;
+		case 6:row.setBackgroundColor(Color.YELLOW);
+			break;
+		default:
+			break;
+			}
 		holder.itemName.setText(item.getItem());
 		holder.itemPrice.setText(Double.toString(item.getPrice()));
 		holder.itemImage.setImageBitmap(item.getPic());

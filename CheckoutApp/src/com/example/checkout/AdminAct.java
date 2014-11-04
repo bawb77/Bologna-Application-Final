@@ -280,6 +280,7 @@ public class AdminAct extends Activity {
     
     public void returnToCheckout(View v)
     {
+    	db.addLog(new LogItem("Change to customer view", date_today, 0));
     	super.onBackPressed();
     	finish();
     }

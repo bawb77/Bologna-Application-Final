@@ -50,7 +50,7 @@
             android:id="@+id/bt_print"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="printLogs"
+            android:onClick="saveLogs"
             android:text="@string/print"
             android:textSize="20sp" />
 

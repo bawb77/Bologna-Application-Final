@@ -1,6 +1,12 @@
 package com.example.checkout;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -8,7 +14,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.print.PrintManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -17,6 +25,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ShowLogs extends Activity {
 	
@@ -49,14 +58,14 @@ public class ShowLogs extends Activity {
 	    for(LogItem item : logs){
 	    	String user = "";
 	    	if(item.user_type == 0){
-	    		user = "general";
+	    		user = "General";
 	    	} else if(item.user_type == 1){
-	    		user = "customer";
+	    		user = "-- Customer";
 	    	} else if(item.user_type == 2){
-	    		user = "admin";
+	    		user = "# Admin";
 	    	}
 	    	
-	    	logs_str.add(user + " activity on " + item.date + ": " + item.value);
+	    	logs_str.add(user + " activity on " + item.date + ":\n" + item.value);
 	    }
 	    
 	    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -70,6 +79,56 @@ public class ShowLogs extends Activity {
 	public void deleteLogs(View v){
 		AlertDialog diaBox = AskOption();
 		diaBox.show();
+	}
+	
+	public void saveLogs(View v){
+		Date date = new Date();
+    	String dateFormat = "dd/MM/yyyy";
+    	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    	String date_today = sdf.format(date);
+		
+		try {
+            File f = File.createTempFile("POS logs " + date_today, ".txt", Environment.getExternalStorageDirectory ());
+            FileOutputStream fileos = openFileOutput("POS logs " + date_today, Context.MODE_PRIVATE);
+            Log.v("ALC", "before new");
+            FileWriter fw = new FileWriter(f);
+            Log.v("ALC", "after new");
+            
+            for(LogItem log : logs){
+            	boolean change_user = false;
+    	    	String user = "";
+    	    	if(log.user_type == 0){
+    	    		user = "General";
+    	    		change_user = true;
+    	    	} else if(log.user_type == 1){
+    	    		user = "-- Customer";
+    	    	} else if(log.user_type == 2){
+    	    		user = "# Admin";
+    	    	}
+    	    	
+    	    	String line = "";
+    	    	
+    	    	if(change_user){
+    	    		line += "\n";
+    	    	}
+    	    	
+    	    	line += user + " activity on " + log.date + ":\n" + log.value+ "\n";
+    	    	
+    	    	if(change_user){
+    	    		line += "--------------------------------------------------------\n";
+    	    	}
+    	    	
+    	    	line += "\n";
+    	    	
+    	    	fw.write(line);
+            }
+            
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error while saving file", Toast.LENGTH_LONG).show();
+        }
 	}
 	
 	public void printLogs(View v){

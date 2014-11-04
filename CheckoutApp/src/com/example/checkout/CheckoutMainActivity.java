@@ -441,6 +441,7 @@ public class CheckoutMainActivity extends Activity {
     }
     public void adminClick(View v)
     {
+    	db.addLog(new LogItem("Change to admin view", date_today, 0));
     	startActivity(new Intent(this, AdminAct.class));
     }
     

@@ -1,14 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.checkout.AdminAct" >
-
 
     <LinearLayout
         android:id="@+id/linearLayout1a"
@@ -29,9 +28,9 @@
                 android:layout_weight="12.38"
                 android:ems="10"
                 android:hint="@string/search"
+                android:maxLines="1"
                 android:minLines="1"
-                android:textSize="30sp"
-                android:maxLines="1" />
+                android:textSize="30sp" />
 
             <GridView
                 android:id="@+id/itemGrida"
@@ -60,7 +59,7 @@
                 android:id="@+id/pNDisplay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"/>
+                android:inputType="text" />
 
             <TextView
                 android:id="@+id/pPriceTextView"
@@ -77,75 +76,79 @@
                 android:ems="10"
                 android:inputType="numberDecimal" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/updateButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="updatePN"
+                android:text="@string/update"
+                android:textSize="30sp" />
 
-                <Button
-                    android:id="@+id/updateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:onClick="updatePN"
-                    android:text="@string/update" />
+            <Button
+                android:id="@+id/deletePButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="deleteP"
+                android:text="@string/delete"
+                android:textSize="30sp" />
 
-                <Button
-                    android:id="@+id/deletePButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:onClick="deleteP"
-                    android:text="@string/delete" />
-
-                <Button
-                    android:id="@+id/clearButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="clear"
-                    android:text="@string/clear" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/clearButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="clear"
+                android:text="@string/clear"
+                android:textSize="30sp" />
 
             <Button
                 android:id="@+id/scanButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:onClick="scan"
-                android:text="@string/addscan" />
+                android:text="@string/addscan"
+                android:textSize="30sp" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/iv_group"
+                android:layout_width="178dp"
+                android:layout_height="175dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="95dp"
+                android:onClick="changeGroup"
+                android:src="@drawable/nopic"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/showLogButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="230dp"
+                android:onClick="showLogs"
+                android:text="@string/showLogs"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/scanItemButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="returnToCheckout"
+                android:text="@string/returnTC"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <Button
-        android:id="@+id/scanItemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout1a"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="94dp"
-        android:onClick="returnToCheckout"
-        android:text="@string/returnTC" />
-
-    <Button
-        android:id="@+id/showLogButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/scanItemButton"
-        android:layout_marginBottom="28dp"
-        android:layout_toRightOf="@+id/linearLayout1a"
-        android:onClick="showLogs"
-        android:text="@string/showLogs" />
-
-    <ImageButton
-        android:id="@+id/iv_group"
-        android:layout_width="178dp"
-        android:layout_height="175dp"
-        android:layout_alignLeft="@+id/scanItemButton"
-        android:layout_alignTop="@+id/linearLayout1a"
-        android:layout_marginLeft="49dp"
-        android:layout_marginTop="107dp"
-        android:onClick="changeGroup"
-        android:src="@drawable/nopic"
-        android:visibility="invisible" />
 
 </RelativeLayout>

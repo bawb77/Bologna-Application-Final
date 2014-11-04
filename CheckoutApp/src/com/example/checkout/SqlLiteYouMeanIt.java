@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class SqlLiteYouMeanIt extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 2;

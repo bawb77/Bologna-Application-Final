@@ -2,35 +2,22 @@ package com.example.checkout;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.print.PrintManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class ShowLogs extends Activity {
@@ -197,18 +184,6 @@ public class ShowLogs extends Activity {
             Toast.makeText(getApplicationContext(), "Error while saving file", Toast.LENGTH_LONG).show();
         }
 	}
-	
-	public void printLogs(View v){
-		PrintManager printManager = (PrintManager) this
-	            .getSystemService(Context.PRINT_SERVICE);
-
-	    String jobName = this.getString(R.string.app_name) + 
-                        " Document";
-
-	    printManager.print(jobName, new PrintLogsAdapter(this),
-	             null);
-	}
-	
 	 private AlertDialog AskOption()
 	 {
 	    AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this) 
@@ -225,22 +200,15 @@ public class ShowLogs extends Activity {
 	        		updateListView();
 	                dialog.dismiss();
 	            }   
-
 	        })
-
-
-
 	        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int which) {
-
 	                dialog.dismiss();
 	            }
 	        })
 	        .create();
 	        return myQuittingDialogBox;
-
 	    }
-	 
 	 public void returnToAdminPage(View v)
 	    {
 	    	super.onBackPressed();

@@ -36,7 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.checkout.CheckoutMainActivity" />
         </activity>
-        <activity android:name="ShowLogs"></activity>
+        <activity android:name="ShowLogs" android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -16,34 +16,32 @@
         android:layout_height="wrap_content"
         android:weightSum="99" >
 
-       <LinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="33"
             android:orientation="vertical" >
 
-           <EditText
-               android:id="@+id/searchText"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_weight="12.38"
-               android:ems="10"
-               android:hint="@string/search"
-               android:textSize="30sp" 
-               android:maxLines="1"/>
+            <EditText
+                android:id="@+id/searchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="12.38"
+                android:ems="10"
+                android:hint="@string/search"
+                android:maxLines="1"
+                android:textSize="30sp" />
 
             <GridView
                 android:id="@+id/itemGrid"
                 android:layout_width="601dp"
                 android:layout_height="576dp"
                 android:layout_weight="28.89"
+                android:horizontalSpacing="10dp"
                 android:numColumns="auto_fit"
                 android:stretchMode="columnWidth"
-                android:horizontalSpacing="10dp"
                 android:verticalSpacing="10dp" >
-
             </GridView>
-
         </LinearLayout>
 
         <LinearLayout
@@ -55,131 +53,130 @@
             <ListView
                 android:id="@+id/cartList"
                 android:layout_width="317dp"
-                android:layout_height="634dp" >
+                android:layout_height="617dp" >
             </ListView>
 
             <Button
                 android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
                 android:onClick="clearAll"
-                android:text="@string/clear" />
+                android:text="@string/clear"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
-            android:layout_weight="33"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/totalView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="45dp"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:text="@string/total"
-                android:textSize="25sp" />
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="@string/hint"
+                android:inputType="none"
+                android:paddingRight="20dp"
+                android:textSize="50sp" />
 
             <TextView
                 android:id="@+id/pNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:lines="2"
                 android:text="@string/totalTax"
-                android:textSize="15sp" />
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/withTax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="@string/hint"
+                android:inputType="none"
+                android:paddingRight="20dp"
+                android:textSize="50sp" />
+
+            <Button
+                android:id="@+id/checkoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="checkOut"
+                android:text="@string/checkout"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/updateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="cashBack"
+                android:text="@string/cashb"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/scanItemButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="scan"
+                android:text="@string/scan"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <ToggleButton
+                    android:id="@+id/Discount5"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:onClick="Dis5"
+                    android:textOff="@string/dis5"
+                    android:textOn="@string/dis5"
+                    android:textSize="20sp" />
+
+                <ToggleButton
+                    android:id="@+id/Discount10"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="Dis10"
+                    android:textOff="@string/dis10"
+                    android:textOn="@string/dis10"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/deletePButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="adminClick"
+                android:text="@string/admin"
+                android:textSize="25sp" />
 
         </LinearLayout>
-
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/total"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/linearLayout1"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/linearLayout1"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="none"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/withTax"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/total"
-        android:layout_below="@+id/total"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="18dp"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:hint="@string/hint"
-        android:inputType="none"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/checkoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/withTax"
-        android:layout_below="@+id/withTax"
-        android:layout_marginTop="25dp"
-        android:onClick="checkOut"
-        android:text="@string/checkout" />
-
-    <ToggleButton
-        android:id="@+id/Discount10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/checkoutButton"
-        android:layout_toLeftOf="@+id/checkoutButton"
-        android:onClick="Dis10"
-        android:textOff="@string/dis10"
-        android:textOn="@string/dis10" />
-
-    <ToggleButton
-        android:id="@+id/Discount5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Discount10"
-        android:layout_alignBottom="@+id/Discount10"
-        android:layout_toLeftOf="@+id/Discount10"
-        android:onClick="Dis5"
-        android:textOff="@string/dis5"
-        android:textOn="@string/dis5" />
-
-    <Button
-        android:id="@+id/deletePButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/checkoutButton"
-        android:layout_below="@+id/checkoutButton"
-        android:layout_marginTop="52dp"
-        android:onClick="adminClick"
-        android:text="@string/admin"
-        android:textSize="25sp" />
-
-    <Button
-        android:id="@+id/updateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/deletePButton"
-        android:layout_below="@+id/checkoutButton"
-        android:onClick="cashBack"
-        android:text="@string/cashb" />
-
-    <Button
-        android:id="@+id/scanItemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/deletePButton"
-        android:layout_below="@+id/deletePButton"
-        android:onClick="scan"
-        android:text="@string/scan" />
 
 </RelativeLayout>

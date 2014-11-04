@@ -3,9 +3,7 @@ package com.example.checkout;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-
 import android.app.Activity;
 //imports
 import android.app.AlertDialog;

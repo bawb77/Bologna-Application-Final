@@ -38,7 +38,9 @@
                 android:layout_height="576dp"
                 android:layout_weight="28.89"
                 android:numColumns="auto_fit"
-                android:stretchMode="columnWidth" >
+                android:stretchMode="columnWidth"
+                android:horizontalSpacing="10dp"
+                android:verticalSpacing="10dp" >
 
             </GridView>
 

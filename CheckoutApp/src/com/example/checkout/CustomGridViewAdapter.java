@@ -54,17 +54,17 @@ public class CustomGridViewAdapter extends ArrayAdapter<Items> {
 			{
 		case 0:
 			break;
-		case 1:row.setBackgroundColor(Color.GREEN);
+		case 1:row.setBackgroundColor(0x6419D419);
 			break;
-		case 2:row.setBackgroundColor(Color.RED);
+		case 2:row.setBackgroundColor(0x64999966);
 			break;
-		case 3:row.setBackgroundColor(Color.BLUE);
+		case 3:row.setBackgroundColor(0x640000CC);
 			break;
-		case 4:row.setBackgroundColor(Color.CYAN);
+		case 4:row.setBackgroundColor(0x64FF0000);
 			break;
-		case 5:row.setBackgroundColor(Color.MAGENTA);
+		case 5:row.setBackgroundColor(0x64E843BF);
 			break;
-		case 6:row.setBackgroundColor(Color.YELLOW);
+		case 6:row.setBackgroundColor(0x64E6E600);
 			break;
 		default:
 			break;

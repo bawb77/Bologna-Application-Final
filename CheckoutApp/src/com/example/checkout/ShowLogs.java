@@ -1,8 +1,10 @@
 package com.example.checkout;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,11 +89,18 @@ public class ShowLogs extends Activity {
     	String date_today = sdf.format(date);
 		
 		try {
-            File f = File.createTempFile("POS logs " + date_today, ".txt", Environment.getDataDirectory());
-            
-            Log.v("ALC", "before new");
-            FileWriter fw = new FileWriter(f);
-            Log.v("ALC", "after new");
+			String dirname = "POS Logs";
+			String filename = "/POSLogs " + date_today;
+			
+			Log.v("ALC", "dir: " + this.getFilesDir());
+			
+			File yourFile = new File(this.getFilesDir().getPath().toString() + filename);
+			if(!yourFile.exists()) {
+			    yourFile.createNewFile();
+			} 
+			FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+			
+			OutputStreamWriter fw = new OutputStreamWriter(oFile); 
             
             for(LogItem log : logs){
             	boolean change_user = false;

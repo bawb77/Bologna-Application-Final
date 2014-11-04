@@ -66,7 +66,6 @@ public class AdminAct extends Activity {
         iv_group = (ImageView)findViewById(R.id.iv_group);
         
         date_today = Calendar.DAY_OF_MONTH + "/" + Calendar.MONTH + "/" + Calendar.YEAR;
-        
         createNewItem = true;
         
         itemList = db.getAllItems();
@@ -74,6 +73,20 @@ public class AdminAct extends Activity {
         mainListDisplay();
         searchText = (EditText) findViewById(R.id.searchTexta);
         searchText.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+			}	
+        });
+        et_name.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+			}	
+        });
+        et_price.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -95,6 +108,7 @@ public class AdminAct extends Activity {
         Bitmap kitchen = BitmapFactory.decodeResource(this.getResources(), R.drawable.kitchenware);//5
         Bitmap clothes = BitmapFactory.decodeResource(this.getResources(), R.drawable.clothes);//6
         picMap = new Bitmap[]{nopic,grocery,auto,bath,toys,kitchen,clothes};
+       // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         	  
     }
     public void update()
@@ -131,11 +145,7 @@ public class AdminAct extends Activity {
         	@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
-        		InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE); 
-
-            	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                           InputMethodManager.HIDE_NOT_ALWAYS);
+        		hideKeyboard();
         		
 				addList(position);
 			}
@@ -202,11 +212,7 @@ public class AdminAct extends Activity {
     		Toast.makeText(getBaseContext(), "Product name and price have to be filled.", Toast.LENGTH_SHORT).show();
     	}
     	
-    	InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE); 
-
-    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                   InputMethodManager.HIDE_NOT_ALWAYS);
+    	hideKeyboard();
     }
     
     public void changeGroup(View v)
@@ -240,13 +246,17 @@ public class AdminAct extends Activity {
     public void clear(View v){
     	clearInfos();
     }
-    
-    private void clearInfos(){
+    public void hideKeyboard()
+    {
     	InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE); 
 
     	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                    InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    
+    private void clearInfos(){
+    	hideKeyboard();
     	
     	et_name.setText("");
     	et_price.setText("");

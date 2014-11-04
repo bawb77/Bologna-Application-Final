@@ -148,11 +148,7 @@ public class CheckoutMainActivity extends Activity {
         	@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
-        		InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE); 
-
-            	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                           InputMethodManager.HIDE_NOT_ALWAYS);
+        		hideKeyboard();
         		
 				addList(position);
 			}
@@ -208,11 +204,7 @@ public class CheckoutMainActivity extends Activity {
     			cList.setOnItemClickListener(new OnItemClickListener() {
 		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 		    		{
-		    			InputMethodManager inputManager = (InputMethodManager)
-		    	                getSystemService(Context.INPUT_METHOD_SERVICE); 
-
-		    	    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-		    	                   InputMethodManager.HIDE_NOT_ALWAYS);
+		    			hideKeyboard();
 		    			
 		    			//remove items and decrease total
 		    			exterminateItem(v, position);
@@ -221,6 +213,14 @@ public class CheckoutMainActivity extends Activity {
     	}	
     	
     	db.addLog(new LogItem("Added " + EditedItemList.get(i).getItem() + " to the cart", date_today, 1));
+    }
+    public void hideKeyboard()
+    {
+    	InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE); 
+
+    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
     }
     //remove items from the checkout cart and update the totals
     public void exterminateItem(View v, int position)
@@ -462,11 +462,7 @@ public class CheckoutMainActivity extends Activity {
     			cList.setOnItemClickListener(new OnItemClickListener() {
 		    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 		    		{
-		    			InputMethodManager inputManager = (InputMethodManager)
-				                getSystemService(Context.INPUT_METHOD_SERVICE); 
-
-				    	inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-				                   InputMethodManager.HIDE_NOT_ALWAYS);
+		    			hideKeyboard();
 		    			
 		    			//remove items and decrease total
 		    			exterminateItem(v, position);

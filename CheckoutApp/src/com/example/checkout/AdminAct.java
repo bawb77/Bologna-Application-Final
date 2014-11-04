@@ -189,7 +189,7 @@ public class AdminAct extends Activity {
 					public void onClick(DialogInterface dialog, int choice) {
 						Integer new_id = db.getLastId() + 1;
 						Log.v("ALC", new_id + " id");
-						Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, picMap[choice] , 0);
+						Items item = new Items(et_name.getText().toString(), Double.parseDouble(et_price.getText().toString()), new_id, picMap[choice] , choice);
 						db.addResult(item);
 						Toast.makeText(getBaseContext(), et_name.getText().toString() + " was added.", Toast.LENGTH_SHORT).show();
 						db.addLog(new LogItem(et_name.getText().toString() + " was added", date_today, 2));

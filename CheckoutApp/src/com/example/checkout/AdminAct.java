@@ -7,6 +7,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +37,10 @@ public class AdminAct extends Activity {
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> EditedItemList = new ArrayList<Items>();
 	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
+	private static final int ACTIVITY_RESULT_QR_DRDROID = 0;
+	public static final String SCAN = "la.droid.qr.scan";
+	public static final String COMPLETE = "la.droid.qr.complete";
+	public static final String RESULT = "la.droid.qr.result";
 	Bitmap[] picMap;
 	// layout item instantiation
 	GridView ItemGrid;
@@ -119,6 +124,39 @@ public class AdminAct extends Activity {
        // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         	  
     }
+    public void scan(View v)
+    {
+    	//Create a new Intent to send to QR Droid
+		Intent qrDroid = new Intent( SCAN ); //Set action "la.droid.qr.scan"
+
+			qrDroid.putExtra( COMPLETE , true);
+
+		
+		//Send intent and wait result
+		try {
+			startActivityForResult(qrDroid, ACTIVITY_RESULT_QR_DRDROID);
+		} catch (ActivityNotFoundException activity) {
+			Toast.makeText(getBaseContext(), "Please DownLoad QRdroid from the marketplace.", Toast.LENGTH_SHORT).show();
+		}
+    }
+    @Override
+	/**
+	 * Reads data scanned by user and returned by QR Droid
+	 */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if( ACTIVITY_RESULT_QR_DRDROID==requestCode && null!=data && data.getExtras()!=null ) {
+			//Read result from QR Droid (it's stored in la.droid.qr.result)
+			String result = data.getExtras().getString(RESULT);
+			String[] temp = result.split(",");
+			//Just set result to EditText to be able to view it
+			
+			et_name.setText( temp[0] );
+			et_price.setText(temp[1]);
+			addItemToDatabase();
+		}
+	}
     public void update()
     {    	
     	itemList = db.getAllItems();
@@ -176,6 +214,10 @@ public class AdminAct extends Activity {
     
     public void updatePN(View v)
     {
+    	addItemToDatabase();
+    }
+    public void addItemToDatabase()
+    {
     	if(!et_name.getText().toString().matches("") && !et_price.getText().toString().matches(""))
     	{
     		if(createNewItem)
@@ -222,7 +264,6 @@ public class AdminAct extends Activity {
     	
     	hideKeyboard();
     }
-    
     public void changeGroup(View v)
     {
     	//create alert dialog

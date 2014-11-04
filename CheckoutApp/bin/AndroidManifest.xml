@@ -31,7 +31,7 @@
             android:name=".AdminAct"
             android:label="@string/title_activity_admin"
             android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".CheckoutMainActivity" >
+            android:parentActivityName=".CheckoutMainActivity" android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.checkout.CheckoutMainActivity" />

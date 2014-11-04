@@ -9,6 +9,7 @@ import java.util.Date;
 import android.app.Activity;
 //imports
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,10 @@ public class CheckoutMainActivity extends Activity {
 	ArrayList<Items> itemList = new ArrayList<Items>();
 	ArrayList<Items> EditedItemList = new ArrayList<Items>();
 	ArrayList<CartItems> cartItems = new ArrayList<CartItems>();
+	private static final int ACTIVITY_RESULT_QR_DRDROID = 0;
+	public static final String SCAN = "la.droid.qr.scan";
+	public static final String COMPLETE = "la.droid.qr.complete";
+	public static final String RESULT = "la.droid.qr.result";
 	// layout item instantiation
 	GridView ItemGrid;
 	CustomGridViewAdapter customGridAdapter;
@@ -158,6 +163,41 @@ public class CheckoutMainActivity extends Activity {
 			}
 		});
     }
+    public void scan(View v)
+    {
+    	searchText.setText("");
+    	//Create a new Intent to send to QR Droid
+		Intent qrDroid = new Intent( SCAN ); //Set action "la.droid.qr.scan"
+
+			qrDroid.putExtra( COMPLETE , true);
+		//Send intent and wait result
+		try {
+			startActivityForResult(qrDroid, ACTIVITY_RESULT_QR_DRDROID);
+		} catch (ActivityNotFoundException activity) {
+			Toast.makeText(getBaseContext(), "Please DownLoad QRdroid from the marketplace.", Toast.LENGTH_SHORT).show();
+		}
+    }
+    @Override
+	/**
+	 * Reads data scanned by user and returned by QR Droid
+	 */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if( ACTIVITY_RESULT_QR_DRDROID==requestCode && null!=data && data.getExtras()!=null ) {
+			//Read result from QR Droid (it's stored in la.droid.qr.result)
+			String result = data.getExtras().getString(RESULT);
+			String[] temp = result.split(",");
+			//Just set result to EditText to be able to view it
+	    		for(Items tempItem: EditedItemList)
+	    		{
+	    			if(tempItem.item.equals(temp[0]))
+	    			{
+	    				addList(EditedItemList.indexOf(tempItem));
+	    			}
+	    		}
+		}
+	}
     //calculate price total for all objects in the checkout cart
     public double calcTotal()
     {

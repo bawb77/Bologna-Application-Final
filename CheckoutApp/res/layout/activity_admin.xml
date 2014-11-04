@@ -106,11 +106,18 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/scanButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="scan"
+                android:text="@string/addscan" />
+
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/scanItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/linearLayout1a"
@@ -123,7 +130,7 @@
         android:id="@+id/showLogButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/scanItemButton"
         android:layout_marginBottom="28dp"
         android:layout_toRightOf="@+id/linearLayout1a"
         android:onClick="showLogs"
@@ -133,7 +140,7 @@
         android:id="@+id/iv_group"
         android:layout_width="178dp"
         android:layout_height="175dp"
-        android:layout_alignLeft="@+id/button1"
+        android:layout_alignLeft="@+id/scanItemButton"
         android:layout_alignTop="@+id/linearLayout1a"
         android:layout_marginLeft="49dp"
         android:layout_marginTop="107dp"

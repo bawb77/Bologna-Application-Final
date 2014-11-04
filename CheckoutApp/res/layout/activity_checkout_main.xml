@@ -173,4 +173,13 @@
         android:onClick="cashBack"
         android:text="@string/cashb" />
 
+    <Button
+        android:id="@+id/scanItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/deletePButton"
+        android:layout_below="@+id/deletePButton"
+        android:onClick="scan"
+        android:text="@string/scan" />
+
 </RelativeLayout>

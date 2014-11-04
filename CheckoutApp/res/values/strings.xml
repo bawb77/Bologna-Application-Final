@@ -30,5 +30,7 @@
     <string name="returnAP">Return to Admin Page</string>
     <string name="showLogs">Show Logs</string>
 	<string name="deleteLogs">Delete all Logs</string>
+	<string name="scan">Scan Item</string>
+	<string name="addscan">Add Scanned Item</string>
     
 </resources>

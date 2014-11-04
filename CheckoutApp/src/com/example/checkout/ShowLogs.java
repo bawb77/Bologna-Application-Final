@@ -1,7 +1,6 @@
 package com.example.checkout;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -83,13 +82,13 @@ public class ShowLogs extends Activity {
 	
 	public void saveLogs(View v){
 		Date date = new Date();
-    	String dateFormat = "dd/MM/yyyy";
+    	String dateFormat = "dd_MM_yyyy";
     	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
     	String date_today = sdf.format(date);
 		
 		try {
-            File f = File.createTempFile("POS logs " + date_today, ".txt", Environment.getExternalStorageDirectory ());
-            FileOutputStream fileos = openFileOutput("POS logs " + date_today, Context.MODE_PRIVATE);
+            File f = File.createTempFile("POS logs " + date_today, ".txt", Environment.getDataDirectory());
+            
             Log.v("ALC", "before new");
             FileWriter fw = new FileWriter(f);
             Log.v("ALC", "after new");

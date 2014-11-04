@@ -1,8 +1,11 @@
 package com.example.checkout;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,15 +15,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,6 +40,11 @@ public class ShowLogs extends Activity {
 	Button bt_print;
 	Button bt_return;
 	ListView lv_logs;
+	
+	String username;
+	String Temail;
+	
+	String date_today;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -45,6 +57,11 @@ public class ShowLogs extends Activity {
 	    lv_logs = (ListView)findViewById(R.id.lv_logs);
 	
 	    updateListView();
+	    
+	    Date date = new Date();
+    	String dateFormat = "dd_MM_yyyy";
+    	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    	date_today = sdf.format(date);
 	}
 	
 	private void updateListView(){
@@ -81,17 +98,61 @@ public class ShowLogs extends Activity {
 	}
 	
 	public void saveLogs(View v){
-		Date date = new Date();
-    	String dateFormat = "dd_MM_yyyy";
-    	SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-    	String date_today = sdf.format(date);
-		
+    	final EditText input = new EditText(this);
+    	int type = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
+    	final EditText inputT = new EditText(this);
+    	inputT.setInputType(type);
+    	
+    	//create change alert box
+		AlertDialog builder = new AlertDialog.Builder(ShowLogs.this).create();
+        builder.setView(input);
+    	builder.setTitle("Please enter your name:");
+    	//onclick for after cash received
+    	builder.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				username = input.getText().toString();
+				
+				//create change alert box
+				AlertDialog builder2 = new AlertDialog.Builder(ShowLogs.this).create();
+		        builder2.setView(inputT);
+		    	builder2.setTitle("Please enter your teachers email:");
+		    	//onclick for after cash received
+		    	builder2.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Temail = inputT.getText().toString();
+						
+						sendEmail();
+					}
+		    	});
+		    	
+		    	builder2.show();
+			}
+    	});
+    	builder.show();
+	}
+	
+	public void sendEmail(){
 		try {
-            File f = File.createTempFile("POS logs " + date_today, ".txt", Environment.getDataDirectory());
-            
-            Log.v("ALC", "before new");
-            FileWriter fw = new FileWriter(f);
-            Log.v("ALC", "after new");
+			String filename = "/" + username + "POSLogs " + date_today + ".txt";
+			
+			Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType("text/plain");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {Temail});
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "POS Logs");
+			
+			File file = new File(ShowLogs.this.getFilesDir().toString() + filename);
+			if(file.exists()) {
+				file.delete();
+			}
+			file.createNewFile();
+			    
+			FileOutputStream oFile = new FileOutputStream(file, false); 
+			
+			OutputStreamWriter fw = new OutputStreamWriter(oFile); 
+			
+			String text = username + "'s Log:\n\n";
             
             for(LogItem log : logs){
             	boolean change_user = false;
@@ -119,10 +180,17 @@ public class ShowLogs extends Activity {
     	    	
     	    	line += "\n";
     	    	
-    	    	fw.write(line);
+    	    	text += line;
             }
             
             fw.close();
+            
+            emailIntent.putExtra(Intent.EXTRA_TEXT, text);
+            
+            //Uri uri = Uri.fromFile(file);
+            //emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+			
+            startActivity(Intent.createChooser(emailIntent, "Pick an Email provider"));
 
         } catch (IOException e) {
             e.printStackTrace();

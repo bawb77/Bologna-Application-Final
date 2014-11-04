@@ -405,7 +405,7 @@ public class CheckoutMainActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						double num=0;
 						String temp = input.getText().toString();
-						if (temp != "" && temp != ".*")
+						if (!temp.matches("") && !temp.matches("."))
 						{
 							num = Double.parseDouble(temp);
 							if(num < checkoutTotal){
